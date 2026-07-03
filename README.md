@@ -2,7 +2,7 @@
 
 A comprehensive, data-driven analysis and interactive dashboard examining first-time homebuyer patterns, affordability, mortgage strategies, and policy recommendations for El Paso, Texas.
 
-**Live Demo:** [View Site]
+**Live Demo:** [[View Site](https://hoffmanap.github.io/el-paso-homebuyer/)]
 
 ## Project Overview
 
