@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Policy Recommendations - El Paso Homebuyer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafbfc;
+            color: #1a202c;
+            line-height: 1.6;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e2e8f0;
+            z-index: 1000;
+            padding: 0 2rem;
+        }
+
+        nav .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+
+        nav .logo {
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: -0.5px;
+            color: #2d5a7b;
+        }
+
+        nav .links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #64748b;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: #2d5a7b;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .content {
+            margin-top: 80px;
+            padding: 3rem 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #0f172a;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            color: #64748b;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #0f172a;
+        }
+
+        .section-divider {
+            width: 40px;
+            height: 3px;
+            background: #e07856;
+            margin-bottom: 1.5rem;
+            border-radius: 1px;
+        }
+
+        .section-intro {
+            font-size: 1.05rem;
+            color: #475569;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .section h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #1a202c;
+        }
+
+        .policy-block {
+            background: #f8f9fa;
+            border-left: 4px solid #2d5a7b;
+            padding: 1.75rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .policy-block h4 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #0f172a;
+        }
+
+        .data-cite {
+            background: #fef9f3;
+            border-left: 3px solid #e07856;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            color: #475569;
+        }
+
+        .data-cite strong {
+            color: #b45309;
+        }
+
+        .metric-callout {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .metric-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #e07856;
+            line-height: 1.1;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .recommendation-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .recommendation-card h4 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #0f172a;
+        }
+
+        .timeline {
+            margin: 1.5rem 0;
+        }
+
+        .timeline-item {
+            padding-left: 2rem;
+            margin-bottom: 1.5rem;
+            border-left: 2px solid #cbd5e1;
+            position: relative;
+        }
+
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: -7px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            background: #2d5a7b;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .timeline-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #2d5a7b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-text {
+            color: #475569;
+            font-size: 0.95rem;
+        }
+
+        footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 1024px) {
+            .grid-2 { grid-template-columns: 1fr; }
+            .metric-callout { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 640px) {
+            .content { padding: 1.5rem; }
+            .section { padding: 1.5rem; }
+            .page-header h1 { font-size: 1.6rem; }
+            nav .links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-container">
+        <div class="logo">El Paso Homebuyer</div>
+        <div class="links">
+            <a href="index.html">Overview</a>
+            <a href="analysis.html">Full Analysis</a>
+            <a href="mortgage.html">Mortgage Strategy</a>
+            <a href="map.html">Geographic Map</a>
+            <a href="policy.html" style="color: #2d5a7b; font-weight: 600;">Policy</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="content">
+        <div class="page-header">
+            <h1>Policy Recommendations</h1>
+            <p>Data-backed zoning, building code, and incentive strategies to expand first-time homebuyer access in El Paso</p>
+        </div>
+
+        <!-- Executive Summary -->
+        <div class="section">
+            <h2>Executive Summary</h2>
+            <div class="section-divider"></div>
+            <p class="section-intro">El Paso's first-time homebuyer market is healthy but faces three structural constraints: (1) geographic concentration in three zip codes, creating supply scarcity; (2) reliance on government-backed lending due to limited down-payment savings; and (3) affordability tightening for regional in-movers (3.09x price-to-income ratio). This policy brief outlines targeted interventions in zoning, building code, and financial accessibility to expand homeownership access for the 75.1% of buyers earning below $150k annually.</p>
+
+            <div class="metric-callout">
+                <div>
+                    <div class="metric-value">58.6%</div>
+                    <div class="metric-label">of purchases in 3 zip codes</div>
+                </div>
+                <div>
+                    <strong>Geographic concentration risk:</strong> Supply scarcity in high-demand areas (79928, 79938, 79934) inflates prices relative to broader El Paso. Policy should incentivize expansion into underutilized but accessible areas.
+                </div>
+            </div>
+
+            <div class="metric-callout">
+                <div>
+                    <div class="metric-value">77.3%</div>
+                    <div class="metric-label">rely on govt-backed lending</div>
+                </div>
+                <div>
+                    <strong>Down-payment accessibility:</strong> FHA and VA programs account for 77.3% of loans, indicating limited savings capacity. Expansion of down-payment assistance is the most direct policy lever.
+                </div>
+            </div>
+
+            <div class="metric-callout">
+                <div>
+                    <div class="metric-value">$97k</div>
+                    <div class="metric-label">median household income</div>
+                </div>
+                <div>
+                    <strong>Affordability baseline:</strong> With median income at $97k and median price at $267k (2.75x P/I), local affordability is reasonable but tightening. Production targets should focus on $250k–$300k price tier to maintain accessibility.
+                </div>
+            </div>
+        </div>
+
+        <!-- I. ZONING & LAND USE -->
+        <div class="section">
+            <h2>I. Zoning & Land Use Reforms</h2>
+            <div class="section-divider"></div>
+            <p class="section-intro">Geographic concentration (58.6% of purchases in three zip codes) creates supply scarcity and price inflation. Zoning reforms should expand buildable land and diversify housing product types in underutilized but accessible areas.</p>
+
+            <h3>A. Upzone Underutilized Corridors (79912, 79936, and areas east of 79938)</h3>
+            <div class="policy-block">
+                <h4>Recommendation: Rezone corridors to allow mixed-use and multifamily development</h4>
+                <p>Current constraint: Single-family zoning dominates El Paso, limiting supply of entry-point affordable units. Concentrated first-time buyer demand (27% in 79928 alone) inflates prices in high-demand areas.</p>
+                <p style="margin-top: 1rem;"><strong>Action:</strong> Rezone secondary corridors (79912, 79936, commercial strips along Montana Ave, Yarbrough) to allow:</p>
+                <ul style="margin-left: 2rem; margin-top: 0.75rem; color: #475569; line-height: 1.9;">
+                    <li><strong>Mixed-use residential (MUR-2/3):</strong> 2–4 unit buildings on standard residential lots, reducing per-unit land costs</li>
+                    <li><strong>Infill multifamily (RM-1):</strong> 6–12 unit buildings on commercial/industrial parcels to increase density</li>
+                    <li><strong>Transit-oriented development (TOD) overlays:</strong> Streamlined zoning near transit nodes to reduce approval timelines</li>
+                </ul>
+
+                <div class="data-cite" style="margin-top: 1.5rem;">
+                    <strong>Data support:</strong> 79912 and 79936 combined represent 15% of market (127 purchases). Expanding upzoning in these areas by 30–50% unit capacity would relieve pressure on 79928 (currently 27% of market) and increase total supply by ~40–60 units annually.
+                </div>
+            </div>
+
+            <h3>B. Legalize Accessory Dwelling Units (ADUs)</h3>
+            <div class="policy-block">
+                <h4>Recommendation: Streamline ADU approval in single-family neighborhoods</h4>
+                <p>Current constraint: Restrictive ADU regulations limit supply of affordable rental units and owner-occupant financing options. Young buyers (50% are ages 25–34) often seek flexible housing arrangements.</p>
+                <p style="margin-top: 1rem;"><strong>Action:</strong> Adopt by-right ADU approval for single-family parcels with:</p>
+                <ul style="margin-left: 2rem; margin-top: 0.75rem; color: #475569; line-height: 1.9;">
+                    <li>Up to 800 sqft detached units (reduced parking minimums: 0–1 space)</li>
+                    <li>Exemption from conditional use permits in designated neighborhoods</li>
+                    <li>Reduced impact fees (50% waiver) for ADUs priced at <120% AMI</li>
+                </ul>
+
+                <div class="data-cite" style="margin-top: 1.5rem;">
+                    <strong>Data support:</strong> Median first-time buyer age is 33 with median income $97k. ADU legalization would create ~200–300 rental units annually at $800–$1,000/month in moderate-income neighborhoods, providing pathways to ownership for renters unable to save down payments.
+                </div>
+            </div>
+
+            <h3>C. Reduce Minimum Parking Requirements</h3>
+            <div class="policy-block">
+                <h4>Recommendation: Cut parking minimums in infill/multifamily zones by 50%</h4>
+                <p>Current constraint: Parking minimums (typically 1.5–2 spaces per unit) add $10,000–$20,000 per unit to construction costs. This directly reduces affordability and delays projects.</p>
+                <p style="margin-top: 1rem;"><strong>Action:</strong> Adopt tiered parking minimums:</p>
+                <ul style="margin-left: 2rem; margin-top: 0.75rem; color: #475569; line-height: 1.9;">
+                    <li><strong>Downtown/core areas:</strong> 0.5 spaces per unit (vs. current 1.5)</li>
+                    <li><strong>Infill corridors:</strong> 0.75 spaces per unit (vs. current 1.5–2)</li>
+                    <li><strong>Transit-adjacent:</strong> 0.25 spaces per unit + bike parking mandate</li>
+                </ul>
+
+                <div class="data-cite" style="margin-top: 1.5rem;">
+                    <strong>Cost impact:</strong> Reducing parking by 1 space per unit saves ~$12,000 per unit (15–20% of total construction cost in El Paso). For a 4-unit building, total savings = $48,000, translating to $300–$400 monthly mortgage savings for entry-point buyers.
+                </div>
+            </div>
+
+            <h3>D. Create Opportunity Zones for Affordable Housing</h3>
+            <div class="policy-block">
+                <h4>Recommendation: Tax increment and fee waivers in designated corridors</h4>
+                <p><strong>Target areas:</strong> 79912, 79936, underdeveloped parcels east of 79938.</p>
+                <p style="margin-top: 1rem;"><strong>Action:</strong> Designate opportunity zones with:</p>
+                <ul style="margin-left: 2rem; margin-top: 0.75rem; color: #475569; line-height: 1.9;">
+                    <li><strong>Impact fee waivers:</strong> 100% waiver for units <120% AMI; 50% for <150% AMI</li>
+                    <li><strong>Property tax abatement:</strong> 5-year freeze on assessed value increases for new construction</li>
+                    <li><strong>Development incentive overlays:</strong> Density bonuses (+15% units) for projects with 20%+ affordability</li>
+                </ul>
+
+                <div class="data-cite" style="margin-top: 1.5rem;">
+                    <strong>Data support:</strong> Impact fees in El Paso range $6,000–$12,000 per unit. Waiving fees on entry-point projects (<$250k) would reduce construction costs by 5–8%, supporting production of ~50–80 additional units annually in underutilized areas.
+                </div>
+            </div>
+        </div>
+
+        <!-- II. BUILDING CODE & CONSTRUCTION -->
+        <div class="section">
+            <h2>II. Building Code & Development Streamlining</h2>
+            <div class="section-divider"></div>
+            <p class="section-intro">Extended approval timelines and prescriptive code requirements inflate soft costs. Streamlining can reduce per-unit construction costs by 5–15%, directly improving affordability for buyers earning <$150k (75% of cohort).</p>
+
+            <h3>A. Adopt Prescriptive Affordable Housing Code</h3>
+            <div class="policy-block">
+                <h4>Recommendation: Performance-based code for projects <150% AMI</h4>
+                <p>Current constraint: Prescriptive (checklist-based) codes require exact compliance with materials/systems. Performance-based alternatives (meeting outcomes without dictating methods) reduce cost and approval time.</p>
+                <p style="margin-top: 1rem;"><strong>Action:</strong> Establish performance-based building code track for projects meeting affordability thresholds:</p>
+                <ul style="margin-left: 2rem; margin-top: 0.75rem; color: #475569; line-height: 1.9;">
+                    <li>Projects with ≥50% units <150% AMI eligible for performance-based review</li>
+                    <li>Streamlined mechanical/electrical approval (3 weeks vs. 6–8 weeks)</li>
+                    <li>Expedited occupancy permits (same-day vs. 5-day standard)</li>
+                </ul>
+
+                <div class="data-cite" style="margin-top: 1.5rem;">
+                    <strong>Cost/timeline impact:</strong> Performance-based review reduces soft costs (permitting, insurance, interest during construction) by ~2–3%, or $5,000–$8,000 per unit. For a 10-unit project, total savings = $50,000–$80,000, reducing average sale price by $5,000–$8,000 per unit.
+                </div>
+            </div>
+
+            <h3>B. Standardize Utility Infrastructure</h3>
+            <div class="policy-block">
+                <h4>Recommendation: Pre-engineered utility networks in opportunity zones</h4>
+                <p>Current constraint: Each project requires custom utility designs. Pre-approved infrastructure templates reduce engineering costs and approval timelines.</p>
+                <p style="margin-top: 1rem;"><strong>Action:</strong> Publish standard utility designs for infill corridors:</p>
+                <ul style="margin-left: 2rem; margin-top: 0.75rem; color: #475569; line-height: 1.9;">
+                    <li>Water/sewer: Modular stub configurations for multi-unit infill</li>
+                    <li>Electrical: Pre-approved panel layouts for 4–6 unit buildings</li>
+                    <li>Stormwater: Permeable pavement/bio-swales (vs. detention ponds)</li>
+                </ul>
+
+                <div class="data-cite" style="margin-top: 1.5rem;">
+                    <strong>Cost impact:</strong> Custom utility design = $2,000–$4,000 per unit. Standardized designs reduce this to $500–$1,000, saving $1,500–$3,000 per unit. For El Paso's target of 50–100 units/year in opportunity zones, total savings = $75,000–$300,000 annually.
+                </div>
+            </div>
+
+            <h3>C. Expedited Permitting for Affordable Housing</h3>
+            <div class="policy-block">
+                <h4>Recommendation: Fast-track approval with dedicated review staff</h4>
+                <p><strong>Action:</strong> Establish 60-day approval timeline for affordable projects:</p>
+                <ul style="margin-left: 2rem; margin-top: 0.75rem; color: #475569; line-height: 1.9;">
+                    <li>Dedicated affordable housing reviewer (1 FTE position)</li>
+                    <li>Concurrent (vs. sequential) plan reviews</li>
+                    <li>Pre-development guidance program (free consultations for developers)</li>
+                </ul>
+
+                <div class="data-cite" style="margin-top: 1.5rem;">
+                    <strong>Timeline/cost benefit:</strong> Reducing approval from 120+ days to 60 days saves ~9 months of carrying costs (insurance, utilities, property taxes, interest). For a $1.2M project, this saves ~$45,000–$60,000 (4–6 months of holding costs at 6% financing).
+                </div>
+            </div>
+        </div>
+
+        <!-- III. DOWN-PAYMENT & FINANCING PROGRAMS -->
+        <div class="section">
+            <h2>III. Down-Payment Assistance & Financing Programs</h2>
+            <div class="section-divider"></div>
+            <p class="section-intro">77.3% of first-time buyers rely on government-backed lending (FHA 43.6%, VA 33.7%), indicating down-payment capacity is the binding constraint. Targeted assistance programs directly expand homeownership access.</p>
+
+            <h3>A. City-Funded Down-Payment Assistance Program</h3>
+            <div class="policy-block">
+                <h4>Recommendation: Graduated grant program for households <150% AMI</h4>
+                <p><strong>Program structure:</strong></p>
+                <ul style="margin-left: 2rem; margin-top: 0.75rem; color: #475569; line-height: 1.9;">
+                    <li><strong>Income ≤100% AMI (~$65k):</strong> $10,000 grant (covers 5% down on $200k property)</li>
+                    <li><strong>Income 100–120% AMI ($65k–$78k):</strong> $7,500 grant</li>
+                    <li><strong>Income 120–150% AMI ($78k–$97k):</strong> $5,000 grant</li>
+                </ul>
+                <p style="margin-top: 1rem;"><strong>Funding model:</strong> $2M annual allocation ($20k × 100 households = 133 units/year)</p>
+
+                <div class="data-cite" style="margin-top: 1.5rem;">
+                    <strong>Data support:</strong> Median first-time buyer income is $97k. 46.5% earn $50k–$100k. A $10,000 grant represents 10% of median down-payment need and would enable 130–180 additional first-time buyers annually (13–18% market expansion).
+                </div>
+
+                <div class="timeline" style="margin-top: 1.5rem;">
+                    <div class="timeline-item">
+                        <div class="timeline-label">Year 1</div>
+                        <div class="timeline-text">Establish program, budget $2M, staff 1 FTE coordinator</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-label">Year 2</div>
+                        <div class="timeline-text">Pilot with 100 participants, evaluate outcomes</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-label">Year 3+</div>
+                        <div class="timeline-text">Scale to $3–5M allocation based on demand and tax revenue projections</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>B. Community Land Trust (CLT) Pilot</h3>
+            <div class="policy-block">
+                <h4>Recommendation: Separate land ownership to reduce purchase price</h4>
+                <p><strong>Model:</strong> CLT owns land; homeowner owns structure. Reduces effective purchase price by 20–30%.</p>
+                <p style="margin-top: 1rem;"><strong>Pilot structure:</strong></p>
+                <ul style="margin-left: 2rem; margin-top: 0.75rem; color: #475569; line-height: 1.9;">
+                    <li>Target: 50 units over 3 years in 79928 (highest concentration area)</li>
+                    <li>City provides $1M land acquisition seed funding</li>
+                    <li>Homebuyers purchase structure only (reduced price); lease land at $150–$250/month</li>
+                    <li>Permanent affordability: Resale price capped at formula tied to area AMI</li>
+                </ul>
+
+                <div class="data-cite" style="margin-top: 1.5rem;">
+                    <strong>Cost/benefit:</strong> Median land cost in El Paso = $30,000–$50,000 (11–16% of total purchase price). Separating land through CLT reduces buyer purchase price by $30,000–$50,000, equivalent to removing $1,500–$2,500 from annual mortgage payments (enabling lower-income qualification).
+                </div>
+            </div>
+
+            <h3>C. Employer-Matched Down-Payment Savings</h3>
+            <div class="policy-block">
+                <h4>Recommendation: Tax incentives for employer-matched down-payment programs</h4>
+                <p><strong>Action:</strong> Create local property tax abatement (5 years) for employers offering down-payment matching (e.g., employer matches 50% of employee savings, up to $5,000/year).</p>
+
+                <div class="data-cite" style="margin-top: 1.5rem;">
+                    <strong>Data support:</strong> 73.9% of first-time buyers are from Texas, with majority employed locally. City can incentivize major employers (healthcare, tech, manufacturing) to offer matching programs, targeting employees earning $50k–$100k (46.5% of cohort). Employer matching accelerates down-payment timeline by 2–3 years.
+                </div>
+            </div>
+
+            <h3>D. Shared Equity Purchase Program</h3>
+            <div class="policy-block">
+                <h4>Recommendation: City retains equity stake, buyer co-owns with city</h4>
+                <p><strong>Structure:</strong> For properties $150k–$250k, city funds 25% purchase price as equity co-owner. Buyer finances 75% via mortgage.</p>
+                <p style="margin-top: 1rem;"><strong>Example:</strong></p>
+                <ul style="margin-left: 2rem; margin-top: 0.75rem; color: #475569; line-height: 1.9;">
+                    <li>Purchase price: $220,000</li>
+                    <li>City investment: $55,000 (25%)</li>
+                    <li>Buyer mortgage: $165,000 (75%)</li>
+                    <li>Buyer down payment: $0 required</li>
+                    <li>Upon resale: City reclaims original $55k + pro-rata appreciation (e.g., 25% of gain)</li>
+                </ul>
+
+                <div class="data-cite" style="margin-top: 1.5rem;">
+                    <strong>Data support:</strong> 44% of purchases are in $150k–$250k range. Shared equity model eliminates down-payment barrier for this tier, enabling FHA-ineligible buyers (credit score <580, high DTI) to access homeownership. Anticipated capacity: 30–50 units/year.
+                </div>
+            </div>
+        </div>
+
+        <!-- IV. IMPLEMENTATION & FINANCING -->
+        <div class="section">
+            <h2>IV. Implementation Timeline & Financing</h2>
+            <div class="section-divider"></div>
+
+            <h3>Phased Implementation (Year 1–3)</h3>
+            <div class="grid-2">
+                <div class="recommendation-card">
+                    <h4>Year 1: Foundation</h4>
+                    <ul style="margin-left: 2rem; color: #475569; line-height: 1.9; font-size: 0.95rem;">
+                        <li>Pass zoning amendments (upzoning, ADU legalization)</li>
+                        <li>Establish down-payment assistance program ($2M budget)</li>
+                        <li>Hire affordable housing coordinator</li>
+                        <li>Partner with CLT organization for pilot</li>
+                    </ul>
+                </div>
+                <div class="recommendation-card">
+                    <h4>Year 2: Scaling</h4>
+                    <ul style="margin-left: 2rem; color: #475569; line-height: 1.9; font-size: 0.95rem;">
+                        <li>First projects approved under new zoning</li>
+                        <li>100 households enrolled in down-payment assistance</li>
+                        <li>10–15 CLT homes closed</li>
+                        <li>Shared equity pilot launched</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Funding Sources</h3>
+            <div style="background: #f8f9fa; padding: 1.75rem; border-radius: 8px; margin: 1.5rem 0;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div>
+                        <div style="font-weight: 600; color: #0f172a; margin-bottom: 0.5rem;">Down-Payment Assistance ($2M annually)</div>
+                        <ul style="margin-left: 2rem; color: #475569; font-size: 0.9rem; line-height: 1.9;">
+                            <li>City general fund: $1M</li>
+                            <li>Federal HOME funds: $500k</li>
+                            <li>Private sector partnerships: $500k</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; color: #0f172a; margin-bottom: 0.5rem;">Zoning/Code Changes (Staff resources)</div>
+                        <ul style="margin-left: 2rem; color: #475569; font-size: 0.9rem; line-height: 1.9;">
+                            <li>Planning department: 0.5 FTE</li>
+                            <li>Building department: 0.25 FTE</li>
+                            <li>Legal review: contractor</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Expected Outcomes (Year 3)</h3>
+            <div style="background: #f0f6ff; padding: 1.75rem; border-radius: 8px; border-left: 3px solid #2d5a7b; margin: 1.5rem 0;">
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; font-size: 0.95rem;">
+                    <div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: #2d5a7b; margin-bottom: 0.5rem;">250–300</div>
+                        <div style="color: #64748b;">New units produced in opportunity zones (upzoning impact)</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: #e07856; margin-bottom: 0.5rem;">280</div>
+                        <div style="color: #64748b;">Households assisted via down-payment program (3-year cumulative)</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: #64748b; margin-bottom: 0.5rem;">30–50</div>
+                        <div style="color: #64748b;">CLT homes closed (permanent affordability)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- V. PRIORITY GEOGRAPHIES -->
+        <div class="section">
+            <h2>V. Priority Implementation Geographies</h2>
+            <div class="section-divider"></div>
+            <p class="section-intro">Focus initial interventions on high-demand and underutilized areas to relieve pressure on concentrated markets (79928, 79938, 79934) while building supply in accessible secondary corridors.</p>
+
+            <div class="grid-2">
+                <div style="background: #fef9f3; padding: 1.5rem; border-radius: 8px; border-left: 3px solid #e07856;">
+                    <h4 style="color: #b45309; margin-bottom: 1rem;">High-Priority (Years 1–2)</h4>
+                    <div style="font-size: 0.95rem; color: #475569; line-height: 1.9;">
+                        <strong>79912</strong><br>
+                        7.7% market share; secondary growth area. Upzone for mixed-use residential; launch down-payment assistance pilot.
+                        <br><br>
+                        <strong>79936</strong><br>
+                        7.3% market share; underutilized west corridor. Opportunity zone designation; impact fee waivers for affordable projects.
+                    </div>
+                </div>
+                <div style="background: #f1f5f9; padding: 1.5rem; border-radius: 8px; border-left: 3px solid #64748b;">
+                    <h4 style="color: #2d5a7b; margin-bottom: 1rem;">Ongoing Management (Years 2–3)</h4>
+                    <div style="font-size: 0.95rem; color: #475569; line-height: 1.9;">
+                        <strong>79928, 79938, 79934</strong><br>
+                        Monitor for price escalation; ensure new supply coming online. Consider inclusionary zoning (20–25% affordability) for new projects.
+                        <br><br>
+                        <strong>Central El Paso</strong><br>
+                        Infill opportunities; ADU legalization + expedited permitting.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conclusion -->
+        <div class="section">
+            <h2>Conclusion</h2>
+            <div class="section-divider"></div>
+            <p class="section-intro">El Paso's first-time homebuyer market is robust and locally driven (73.9% Texas-origin). The challenge is not demand, but supply expansion and affordability accessibility. The policy interventions outlined above—zoning reforms to increase supply, building code streamlining to reduce costs, and down-payment assistance to improve accessibility—are complementary levers that, when implemented in combination, can expand homeownership capacity by 15–25% over three years while maintaining affordability for the 75% of buyers earning below $150k.</p>
+
+            <div style="background: #f0f6ff; padding: 2rem; border-radius: 8px; border-left: 3px solid #2d5a7b; margin-top: 2rem;">
+                <h4 style="color: #2d5a7b; margin-bottom: 1rem;">Success Metrics</h4>
+                <ul style="margin-left: 2rem; color: #475569; font-size: 0.95rem; line-height: 1.9;">
+                    <li><strong>Supply:</strong> 250–300 new units in opportunity zones by Year 3</li>
+                    <li><strong>Affordability:</strong> Maintain 2.75x price-to-income ratio for local cohort; reduce regional in-mover ratio from 3.09x to <3.0x</li>
+                    <li><strong>Access:</strong> 280 households assisted via down-payment programs; 30–50 CLT homes closed</li>
+                    <li><strong>Equity:</strong> Ensure geographic distribution outside concentrated 79928/79938/79934 markets</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <p><strong>El Paso First-Time Homebuyer Policy Recommendations</strong> | Data Period: 2025</p>
+        <p style="margin-top: 0.5rem; color: #94a3b8; font-size: 0.85rem;">All recommendations backed by analysis of 849 first-time homebuyer transactions</p>
+    </div>
+</footer>
+
+</body>
+</html>

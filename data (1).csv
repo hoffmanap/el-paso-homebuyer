@@ -1,0 +1,29 @@
+metric,value,unit,category
+Total Buyers,849,count,overview
+Median Purchase Price,267000,USD,affordability
+Median Household Income,97000,USD,affordability
+Price-to-Income Ratio,2.75,ratio,affordability
+Median Age,35,years,demographics
+Median Bedrooms,4,count,housing
+Median Bathrooms,2,count,housing
+Median Sqft,1927,sqft,housing
+Local Metro Base Buyers,581,count,origin
+Regional TX/NM Buyers,70,count,origin
+Out-of-State Buyers,198,count,origin
+FHA Loans,370,count,mortgage
+VA Loans,286,count,mortgage
+Conventional Loans,192,count,mortgage
+ZIP 79928 Purchases,210,count,destination
+ZIP 79938 Purchases,163,count,destination
+ZIP 79934 Purchases,105,count,destination
+ZIP 79912 Purchases,65,count,destination
+ZIP 79936 Purchases,62,count,destination
+Age 25-34,430,count,age_bracket
+Age 35-44,356,count,age_bracket
+Age Under 25,63,count,age_bracket
+Income 50k-100k,392,count,income_bracket
+Income 100k-150k,241,count,income_bracket
+Income 0-50k,61,count,income_bracket
+Income 150k-200k,76,count,income_bracket
+Income 200k-250k,27,count,income_bracket
+Income 250k+,52,count,income_bracket

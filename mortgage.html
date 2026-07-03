@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mortgage Strategy - El Paso Homebuyer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafbfc;
+            color: #1a202c;
+            line-height: 1.6;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e2e8f0;
+            z-index: 1000;
+            padding: 0 2rem;
+        }
+
+        nav .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+
+        nav .logo {
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: -0.5px;
+            color: #2d5a7b;
+        }
+
+        nav .links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #64748b;
+            transition: color 0.2s;
+        }
+
+        nav a:hover { color: #2d5a7b; }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .content {
+            margin-top: 80px;
+            padding: 3rem 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #0f172a;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            color: #64748b;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #0f172a;
+        }
+
+        .section-divider {
+            width: 40px;
+            height: 3px;
+            background: #e07856;
+            margin-bottom: 1.5rem;
+            border-radius: 1px;
+        }
+
+        .section-intro {
+            font-size: 1.05rem;
+            color: #475569;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .section h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #1a202c;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 2px solid #e2e8f0;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .product-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .product-pct {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #e07856;
+        }
+
+        .product-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .detail {
+            font-size: 0.9rem;
+        }
+
+        .detail-label {
+            color: #64748b;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .detail-value {
+            color: #1a202c;
+            font-weight: 600;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .comparison-table th {
+            background: #f1f5f9;
+            border-bottom: 2px solid #e2e8f0;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #1a202c;
+        }
+
+        .comparison-table td {
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem;
+            color: #475569;
+        }
+
+        .comparison-table tr:hover {
+            background: #fafbfc;
+        }
+
+        .finding {
+            background: #f0f6ff;
+            border-left: 3px solid #2d5a7b;
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin: 2rem 0;
+        }
+
+        .finding strong {
+            color: #2d5a7b;
+        }
+
+        .chart-container {
+            margin: 2.5rem 0;
+            height: 400px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 1024px) {
+            .grid-2 { grid-template-columns: 1fr; }
+            .product-header { flex-direction: column; gap: 1rem; }
+        }
+
+        footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 640px) {
+            .content { padding: 1.5rem; }
+            .section { padding: 1.5rem; }
+            .page-header h1 { font-size: 1.6rem; }
+            nav .links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-container">
+        <div class="logo">El Paso Homebuyer</div>
+        <div class="links">
+            <a href="index.html">Overview</a>
+            <a href="analysis.html">Full Analysis</a>
+            <a href="mortgage.html" style="color: #2d5a7b; font-weight: 600;">Mortgage Strategy</a>
+            <a href="map.html">Geographic Map</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="content">
+        <div class="page-header">
+            <h1>Mortgage Product Strategy</h1>
+            <p>Deep-dive analysis of FHA, VA, and conventional lending in El Paso's first-time homebuyer market</p>
+        </div>
+
+        <!-- Market Overview -->
+        <div class="section">
+            <h2>Market Overview</h2>
+            <div class="section-divider"></div>
+            <p class="section-intro">El Paso's first-time homebuyer market is dominated by government-backed lending, with FHA and VA programs accounting for 77.3% of all purchases. This reveals a critical insight: most first-time buyers lack substantial down payment savings and depend on federal lending programs to achieve homeownership.</p>
+            
+            <div class="chart-container">
+                <div id="mortgageOverview"></div>
+            </div>
+
+            <div class="finding">
+                <strong>Key Insight:</strong> The overwhelming reliance on government-backed lending indicates that down payment accessibility is the primary constraint to homeownership for El Paso's first-time buyer cohort. Policy interventions focused on down-payment assistance, shared equity programs, or community land trusts could significantly expand access for income-constrained buyers.
+            </div>
+        </div>
+
+        <!-- FHA Loans -->
+        <div class="product-card" style="border-left: 4px solid #2d5a7b; border-right: none; border-top: none; border-bottom: none; padding-left: 1.5rem;">
+            <div class="product-header">
+                <div>
+                    <div class="product-name">FHA (Federal Housing Administration)</div>
+                    <p style="color: #64748b; margin-top: 0.25rem; font-size: 0.95rem;">Federally insured mortgages designed for first-time and lower-income buyers</p>
+                </div>
+                <div style="text-align: right;">
+                    <div class="product-pct">43.6%</div>
+                    <p style="color: #64748b; margin-top: 0.25rem; font-size: 0.85rem;">370 buyers</p>
+                </div>
+            </div>
+
+            <table class="comparison-table" style="width: 100%;">
+                <tr>
+                    <td style="font-weight: 600; width: 40%;">Down Payment</td>
+                    <td>As low as 3.5% (minimum)</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Credit Score</td>
+                    <td>Minimum 580 (some lenders accept 500)</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Debt-to-Income Ratio</td>
+                    <td>Up to 50% (in some cases)</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Mortgage Insurance</td>
+                    <td>Required (0.55% annually); upfront cost 1.75%</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Loan Limits</td>
+                    <td>$394,160 (Texas, 2024)</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Asset Requirements</td>
+                    <td>Minimal; gifts and grants permitted</td>
+                </tr>
+            </table>
+
+            <h3>Why FHA Dominates in El Paso</h3>
+            <p style="margin-bottom: 1.5rem;">FHA's popularity is driven by four factors:</p>
+            <ul style="margin-left: 2rem; color: #475569; line-height: 1.9;">
+                <li><strong>Low down payments:</strong> 3.5% accessibility removes the largest barrier for income-constrained buyers</li>
+                <li><strong>Flexible credit:</strong> Accepts borrowers with credit scores as low as 580, reaching buyers with limited credit history</li>
+                <li><strong>Gift funds:</strong> Allows down payment gifts from family or non-profits, critical for younger/lower-income cohorts</li>
+                <li><strong>Entry-price accessibility:</strong> 55.0% of FHA loans are for properties under $200k, making it the dominant program at affordability price points</li>
+            </ul>
+
+            <h3 style="margin-top: 2rem;">Distribution by Price Tier</h3>
+            <div class="grid-2">
+                <div>
+                    <div style="font-size: 0.85rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem;">Under $200k</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: #2d5a7b; margin-bottom: 0.5rem;">55.0%</div>
+                    <p style="font-size: 0.9rem; color: #475569;">Dominant loan type at entry-point prices; serves lowest-income cohort</p>
+                </div>
+                <div>
+                    <div style="font-size: 0.85rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem;">$200k–$300k</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: #e07856; margin-bottom: 0.5rem;">51.1%</div>
+                    <p style="font-size: 0.9rem; color: #475569;">Still dominant but declining as buyers access VA and conventional options</p>
+                </div>
+            </div>
+
+            <div class="finding">
+                <strong>FHA as Entry-Point Gateway:</strong> FHA's dominance below $200k makes it the critical entry-point program. Expanding capacity, reducing mortgage insurance costs, or offering shared equity alternatives in this price segment would directly increase homeownership access for El Paso's lowest-income first-time buyers.
+            </div>
+        </div>
+
+        <!-- VA Loans -->
+        <div class="product-card" style="border-left: 4px solid #e07856; border-right: none; border-top: none; border-bottom: none; padding-left: 1.5rem;">
+            <div class="product-header">
+                <div>
+                    <div class="product-name">VA (Veterans Affairs)</div>
+                    <p style="color: #64748b; margin-top: 0.25rem; font-size: 0.95rem;">Loans guaranteed by the Department of Veterans Affairs for eligible military personnel and families</p>
+                </div>
+                <div style="text-align: right;">
+                    <div class="product-pct">33.7%</div>
+                    <p style="color: #64748b; margin-top: 0.25rem; font-size: 0.85rem;">286 buyers</p>
+                </div>
+            </div>
+
+            <table class="comparison-table">
+                <tr>
+                    <td style="font-weight: 600; width: 40%;">Down Payment</td>
+                    <td>0% (no down payment required)</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Credit Score</td>
+                    <td>Minimum 620 (typically); lenders vary</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Debt-to-Income Ratio</td>
+                    <td>Up to 60% (most lenient)</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Mortgage Insurance</td>
+                    <td>None required (IRRRL refinancing available)</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Loan Limits</td>
+                    <td>None (unlimited)</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Funding Fee</td>
+                    <td>1.25% for most first-time users (can be waived if receiving VA disability)</td>
+                </tr>
+            </table>
+
+            <h3>VA's Unique Advantage in El Paso</h3>
+            <p style="margin-bottom: 1.5rem;">VA loans are a major competitive advantage for El Paso, reflecting the region's military presence:</p>
+            <ul style="margin-left: 2rem; color: #475569; line-height: 1.9;">
+                <li><strong>Zero down payment:</strong> Eliminates the primary barrier to homeownership for military families</li>
+                <li><strong>No mortgage insurance:</strong> Unlike FHA, VA loans carry no ongoing mortgage insurance (only a one-time funding fee)</li>
+                <li><strong>Military-friendly underwriting:</strong> Lenders understand military compensation structures and offer favorable terms</li>
+                <li><strong>Uniform presence:</strong> Fort Bliss and other installations drive consistent VA-eligible population</li>
+            </ul>
+
+            <h3 style="margin-top: 2rem;">Distribution by Price Tier</h3>
+            <div class="grid-2">
+                <div>
+                    <div style="font-size: 0.85rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem;">Under $200k</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: #e07856; margin-bottom: 0.5rem;">21.2%</div>
+                    <p style="font-size: 0.9rem; color: #475569;">Secondary to FHA at entry prices, but growing share</p>
+                </div>
+                <div>
+                    <div style="font-size: 0.85rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem;">$300k+</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: #2d5a7b; margin-bottom: 0.5rem;">34.8%</div>
+                    <p style="font-size: 0.9rem; color: #475569;">Competitive with conventional in higher price tiers</p>
+                </div>
+            </div>
+
+            <div class="finding">
+                <strong>Military as Market Stabilizer:</strong> VA loans represent one-third of all first-time purchases. El Paso's military presence (Fort Bliss, military families) is a competitive advantage that stabilizes demand and provides a consistent cohort of qualified buyers. Military family relocation, base stability, and consistent income support broader housing demand.
+            </div>
+        </div>
+
+        <!-- Conventional Loans -->
+        <div class="product-card" style="border-left: 4px solid #64748b; border-right: none; border-top: none; border-bottom: none; padding-left: 1.5rem;">
+            <div class="product-header">
+                <div>
+                    <div class="product-name">Conventional</div>
+                    <p style="color: #64748b; margin-top: 0.25rem; font-size: 0.95rem;">Traditional mortgages not backed by federal guarantees; typically require stronger credit and larger down payments</p>
+                </div>
+                <div style="text-align: right;">
+                    <div class="product-pct">22.6%</div>
+                    <p style="color: #64748b; margin-top: 0.25rem; font-size: 0.85rem;">192 buyers</p>
+                </div>
+            </div>
+
+            <table class="comparison-table">
+                <tr>
+                    <td style="font-weight: 600; width: 40%;">Down Payment</td>
+                    <td>5% minimum (20% to avoid PMI)</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Credit Score</td>
+                    <td>Minimum 620–640 (varies by lender; 740+ preferred)</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Debt-to-Income Ratio</td>
+                    <td>Up to 43% (more conservative)</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Mortgage Insurance</td>
+                    <td>PMI required if down payment < 20% (0.5–2% annually)</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Loan Limits</td>
+                    <td>Conforming: $766,550 (2024); higher limits available (jumbo)</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600;">Underwriting</td>
+                    <td>Most stringent; requires stable employment and credit history</td>
+                </tr>
+            </table>
+
+            <h3>Why Conventional is Minority in First-Time Market</h3>
+            <p style="margin-bottom: 1.5rem;">Conventional loans represent only 22.6% of the first-time buyer market because:</p>
+            <ul style="margin-left: 2rem; color: #475569; line-height: 1.9;">
+                <li><strong>Down payment barrier:</strong> 5% minimum is still a significant hurdle for income-constrained buyers</li>
+                <li><strong>Credit requirements:</strong> Minimum 620 credit score excludes young/thin-file borrowers common in first-time cohorts</li>
+                <li><strong>Income qualification:</strong> Stricter DTI limits (43%) vs. FHA (50%) and VA (60%)</li>
+                <li><strong>Concentrated in upper price tiers:</strong> 35.5% of $300k+ purchases are conventional, indicating this product serves higher-income buyers</li>
+            </ul>
+
+            <h3 style="margin-top: 2rem;">Distribution by Price Tier</h3>
+            <div class="grid-2">
+                <div>
+                    <div style="font-size: 0.85rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem;">Under $200k</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: #64748b; margin-bottom: 0.5rem;">23.8%</div>
+                    <p style="font-size: 0.9rem; color: #475569;">Tertiary option; requires stronger financial position than FHA/VA buyers</p>
+                </div>
+                <div>
+                    <div style="font-size: 0.85rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem;">$300k+</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: #2d5a7b; margin-bottom: 0.5rem;">35.5%</div>
+                    <p style="font-size: 0.9rem; color: #475569;">Dominant at higher price tiers; indicates wealth/savings for down payment</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparative Analysis -->
+        <div class="section">
+            <h2>Program Comparison: Which Buyers Choose What?</h2>
+            <div class="section-divider"></div>
+            
+            <p class="section-intro">The distribution of loan products across price tiers reveals buyer financial capacity and access to down payment capital.</p>
+
+            <div class="chart-container">
+                <div id="mortgageComparison"></div>
+            </div>
+
+            <h3>Key Patterns</h3>
+            <ul style="margin-left: 2rem; color: #475569; line-height: 2; margin-bottom: 1.5rem;">
+                <li><strong>Entry-point dominance:</strong> FHA and VA control the sub-$200k market (76.2% combined), reflecting income constraints</li>
+                <li><strong>Mid-market shift:</strong> $200k–$300k tiers show diversification, with FHA declining to 51.1% and VA rising to 35.1%</li>
+                <li><strong>Upper-tier reversal:</strong> $300k+ purchases shift to conventional (35.5%), indicating buyers with equity, family support, or higher incomes</li>
+                <li><strong>VA stability:</strong> VA maintains 21–35% presence across all price tiers, reflecting military demographic spread</li>
+            </ul>
+
+            <div class="finding">
+                <strong>Insight:</strong> Loan product selection is a proxy for financial capacity. Entry-point FHA buyers represent the income-constrained segment; upper-tier conventional buyers represent those with stronger savings or wealth. Expanding accessible loan products at entry-point prices would be the most direct policy lever to increase homeownership.
+            </div>
+        </div>
+
+        <!-- Policy Recommendations -->
+        <div class="section">
+            <h2>Policy Recommendations</h2>
+            <div class="section-divider"></div>
+
+            <h3>1. Enhance FHA Accessibility at Entry Points</h3>
+            <p>Since FHA dominates below $200k, expanding FHA capacity or reducing mortgage insurance costs would directly increase homeownership access. Consider:</p>
+            <ul style="margin-left: 2rem; color: #475569; line-height: 1.9; margin: 1rem 0;">
+                <li>City-funded down-payment assistance tied to FHA loans</li>
+                <li>Shared equity programs (city retains equity stake, reducing buyer's mortgage need)</li>
+                <li>Community land trusts (separate land/building ownership to reduce purchase price)</li>
+            </ul>
+
+            <h3>2. Stabilize and Expand VA Lending</h3>
+            <p>VA loans are a comparative advantage for El Paso. Maintain this by:</p>
+            <ul style="margin-left: 2rem; color: #475569; line-height: 1.9; margin: 1rem 0;">
+                <li>Partnering with military family organizations to promote VA lending awareness</li>
+                <li>Ensuring affordable inventory near military installations</li>
+                <li>Coordinating with military family relocation programs</li>
+            </ul>
+
+            <h3>3. Targeted Down-Payment Assistance</h3>
+            <p>The 77.3% reliance on government-backed lending indicates down-payment capacity is the binding constraint. A coordinated program could include:</p>
+            <ul style="margin-left: 2rem; color: #475569; line-height: 1.9; margin: 1rem 0;">
+                <li>City-funded down-payment assistance (gift funds) for below-median-income buyers</li>
+                <li>Non-profit partnerships (Habitat for Humanity, local CDCs) to provide sweat-equity down-payment programs</li>
+                <li>Tax credits or employer matching for first-time buyer down-payment savings</li>
+            </ul>
+
+            <h3>4. Expand Credit-Building and Financial Coaching</h3>
+            <p>Many below-FHA-minimum-credit buyers could access homeownership with credit-building support. Programs could include:</p>
+            <ul style="margin-left: 2rem; color: #475569; line-height: 1.9; margin: 1rem 0;">
+                <li>Non-profit credit counseling partnerships (NFCC-affiliated agencies)</li>
+                <li>Secured credit card programs for thin-file borrowers</li>
+                <li>Financial literacy and homebuyer education classes</li>
+            </ul>
+
+            <h3>5. Diversify Housing Affordability Models</h3>
+            <p>Beyond traditional mortgages, consider:</p>
+            <ul style="margin-left: 2rem; color: #475569; line-height: 1.9; margin: 1rem 0;">
+                <li>Community land trusts (CLTs) for permanently affordable homeownership</li>
+                <li>Shared equity programs (buyer/city co-own, with buyout option)</li>
+                <li>Rent-to-own programs with formal conversion pathways</li>
+            </ul>
+        </div>
+
+        <!-- Data Context -->
+        <div class="section">
+            <h2>About This Analysis</h2>
+            <div class="section-divider"></div>
+            <p class="section-intro">This analysis examines 849 first-time homebuyer transactions with clear loan product designations (FHA, VA, conventional). Product data sourced from HMDA (Home Mortgage Disclosure Act) records, which classify all reportable loans by type. Terms and requirements are standardized as of 2024–2025 and may vary by lender.</p>
+        </div>
+
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <p><strong>El Paso First-Time Homebuyer Analysis – Mortgage Strategy</strong> | Data Period: 2025</p>
+        <p style="margin-top: 0.5rem; color: #94a3b8; font-size: 0.85rem;">For informational purposes only</p>
+    </div>
+</footer>
+
+<script>
+const plotlyConfig = { responsive: true, displayModeBar: false };
+const plotlyLayout = {
+    font: { family: "'Inter', sans-serif", color: '#1a202c' },
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
+    showlegend: false,
+    margin: { l: 60, r: 40, t: 40, b: 60 }
+};
+
+// Mortgage Overview Pie
+Plotly.newPlot('mortgageOverview', [{
+    labels: ['FHA', 'VA', 'Conventional'],
+    values: [370, 286, 192],
+    type: 'pie',
+    marker: {colors: ['#2d5a7b', '#e07856', '#64748b'], line: {color: white, width: 2}},
+    textposition: 'inside',
+    textinfo: 'label+percent',
+    hovertemplate: '<b>%{label}</b><br>%{value} buyers (%{percent})<extra></extra>'
+}], {
+    ...plotlyLayout,
+    title: { text: '<b>Mortgage Product Distribution (All Buyers)</b>', font: { size: 16 } }
+}, plotlyConfig);
+
+// Mortgage Comparison Bar
+Plotly.newPlot('mortgageComparison', [
+    {
+        x: ['Under\n$200k', '$200k–\n$300k', '$300k+'],
+        y: [55.0, 51.1, 29.7],
+        name: 'FHA',
+        type: 'bar',
+        marker: {color: '#2d5a7b', line: {width: 0}},
+        hovertemplate: '<b>FHA</b><br>%{y}%<extra></extra>'
+    },
+    {
+        x: ['Under\n$200k', '$200k–\n$300k', '$300k+'],
+        y: [21.2, 35.1, 34.8],
+        name: 'VA',
+        type: 'bar',
+        marker: {color: '#e07856', line: {width: 0}},
+        hovertemplate: '<b>VA</b><br>%{y}%<extra></extra>'
+    },
+    {
+        x: ['Under\n$200k', '$200k–\n$300k', '$300k+'],
+        y: [23.8, 13.6, 35.5],
+        name: 'Conventional',
+        type: 'bar',
+        marker: {color: '#64748b', line: {width: 0}},
+        hovertemplate: '<b>Conventional</b><br>%{y}%<extra></extra>'
+    }
+], {
+    ...plotlyLayout,
+    title: { text: '<b>Mortgage Product Mix by Price Tier</b>', font: { size: 16 } },
+    xaxis: { title: 'Purchase Price Range', showgrid: false },
+    yaxis: { title: 'Percentage of Buyers (%)', showgrid: true, gridwidth: 1, gridcolor: '#e2e8f0' },
+    barmode: 'group'
+}, plotlyConfig);
+</script>
+
+</body>
+</html>

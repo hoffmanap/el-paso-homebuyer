@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geographic Map - El Paso Homebuyer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafbfc;
+            color: #1a202c;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e2e8f0;
+            z-index: 1000;
+            padding: 0 2rem;
+        }
+
+        nav .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+
+        nav .logo {
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: -0.5px;
+            color: #2d5a7b;
+        }
+
+        nav .links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #64748b;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: #2d5a7b;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .content {
+            margin-top: 60px;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 0;
+            min-height: 100vh;
+        }
+
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+
+        .sidebar {
+            background: white;
+            border-left: 1px solid #e2e8f0;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .sidebar h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: #0f172a;
+        }
+
+        .sidebar-intro {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .zip-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            border-left: 3px solid #2d5a7b;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .zip-card:hover {
+            background: #f1f5f9;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .zip-card.top-3 {
+            border-left-color: #e07856;
+        }
+
+        .zip-code {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 0.25rem;
+        }
+
+        .zip-name {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 0.75rem;
+        }
+
+        .zip-stat {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #475569;
+            margin: 0.5rem 0;
+            line-height: 1.5;
+        }
+
+        .zip-stat strong {
+            color: #1a202c;
+            font-weight: 600;
+        }
+
+        .zip-pct {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #e07856;
+            margin-top: 0.75rem;
+        }
+
+        .legend {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 1.5rem;
+        }
+
+        .legend-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            color: #1a202c;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-size: 0.85rem;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-right: 0.75rem;
+        }
+
+        @media (max-width: 1024px) {
+            .content {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+
+            #map {
+                height: 600px;
+                margin-bottom: 2rem;
+            }
+
+            .sidebar {
+                border-left: none;
+                border-top: 1px solid #e2e8f0;
+                padding: 2rem;
+                max-width: 100%;
+            }
+
+            nav .links {
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            nav .links {
+                display: none;
+            }
+
+            .sidebar {
+                padding: 1.5rem;
+            }
+
+            #map {
+                height: 400px;
+            }
+        }
+
+        footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            padding: 2rem;
+            text-align: center;
+            font-size: 0.85rem;
+            grid-column: 1 / -1;
+        }
+
+        .leaflet-popup-content {
+            font-family: 'Inter', sans-serif !important;
+            font-size: 0.9rem !important;
+        }
+
+        .leaflet-popup-content strong {
+            color: #2d5a7b;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-container">
+        <div class="logo">El Paso Homebuyer</div>
+        <div class="links">
+            <a href="index.html">Overview</a>
+            <a href="analysis.html">Full Analysis</a>
+            <a href="mortgage.html">Mortgage Strategy</a>
+            <a href="map.html" style="color: #2d5a7b; font-weight: 600;">Geographic Map</a>
+            <a href="policy.html">Policy</a>
+        </div>
+    </div>
+</nav>
+
+<div class="content">
+    <div id="map"></div>
+    
+    <div class="sidebar">
+        <h2>Zip Code Concentration</h2>
+        <p class="sidebar-intro">First-time buyer purchases are highly concentrated in three zip codes, accounting for 58.6% of all activity.</p>
+        
+        <div class="zip-card top-3">
+            <div class="zip-code">79928</div>
+            <div class="zip-name">South/Southeast El Paso</div>
+            <div class="zip-stat">
+                <span>Purchases:</span>
+                <strong>210</strong>
+            </div>
+            <div class="zip-pct">27.0%</div>
+            <p style="font-size: 0.8rem; color: #64748b; margin-top: 0.5rem;">Most popular destination; new construction and affordability</p>
+        </div>
+
+        <div class="zip-card top-3">
+            <div class="zip-code">79938</div>
+            <div class="zip-name">Far East Montana Corridor</div>
+            <div class="zip-stat">
+                <span>Purchases:</span>
+                <strong>163</strong>
+            </div>
+            <div class="zip-pct">19.2%</div>
+            <p style="font-size: 0.8rem; color: #64748b; margin-top: 0.5rem;">Suburban expansion eastward</p>
+        </div>
+
+        <div class="zip-card top-3">
+            <div class="zip-code">79934</div>
+            <div class="zip-name">Northeast Frontier</div>
+            <div class="zip-stat">
+                <span>Purchases:</span>
+                <strong>105</strong>
+            </div>
+            <div class="zip-pct">12.4%</div>
+            <p style="font-size: 0.8rem; color: #64748b; margin-top: 0.5rem;">Secondary growth corridor</p>
+        </div>
+
+        <div style="background: #f0f6ff; padding: 1rem; border-radius: 6px; margin-top: 1.5rem; border-left: 3px solid #2d5a7b;">
+            <div style="font-size: 0.85rem; color: #1a202c; line-height: 1.6;">
+                <strong>58.6%</strong> of all first-time buyer purchases occur in these three zip codes, creating supply scarcity and price pressure relative to broader El Paso.
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-title">Other Concentrated Areas</div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #cbd5e1;"></div>
+                <span>79912 (65 purchases, 7.7%)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #e2e8f0;"></div>
+                <span>79936 (62 purchases, 7.3%)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #f1f5f9;"></div>
+                <span>Other (244 purchases, 28.8%)</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p><strong>El Paso First-Time Homebuyer Geographic Analysis</strong> | Map shows zip code density of first-time buyer purchases</p>
+</footer>
+
+<script>
+// Initialize map
+const map = L.map('map').setView([31.8, -106.5], 10);
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '© OpenStreetMap contributors',
+    maxZoom: 19
+}).addTo(map);
+
+// Zip code boundaries and data
+const zipCodes = [
+    {
+        code: '79928',
+        name: 'South/Southeast El Paso',
+        purchases: 210,
+        pct: 27.0,
+        coords: [[31.65, -106.35], [31.75, -106.25]],
+        color: '#e07856',
+        top: true
+    },
+    {
+        code: '79938',
+        name: 'Far East Montana Corridor',
+        purchases: 163,
+        pct: 19.2,
+        coords: [[31.85, -106.15], [31.95, -106.05]],
+        color: '#e07856',
+        top: true
+    },
+    {
+        code: '79934',
+        name: 'Northeast Frontier',
+        purchases: 105,
+        pct: 12.4,
+        coords: [[31.92, -106.35], [32.02, -106.25]],
+        color: '#e07856',
+        top: true
+    },
+    {
+        code: '79912',
+        name: 'Central/East',
+        purchases: 65,
+        pct: 7.7,
+        coords: [[31.75, -106.55], [31.85, -106.45]],
+        color: '#cbd5e1',
+        top: false
+    },
+    {
+        code: '79936',
+        name: 'West/Northwest',
+        purchases: 62,
+        pct: 7.3,
+        coords: [[31.8, -106.75], [31.9, -106.65]],
+        color: '#cbd5e1',
+        top: false
+    }
+];
+
+// Add rectangles for zip code areas
+zipCodes.forEach(zip => {
+    const bounds = L.latLngBounds(zip.coords);
+    const rect = L.rectangle(bounds, {
+        color: zip.color,
+        weight: 2,
+        opacity: 0.7,
+        fill: true,
+        fillColor: zip.color,
+        fillOpacity: 0.15
+    }).addTo(map);
+
+    const popupContent = `
+        <div style="font-weight: 600; margin-bottom: 0.5rem;">${zip.code} – ${zip.name}</div>
+        <div style="font-size: 0.9rem; color: #475569;">
+            <div style="margin: 0.3rem 0;"><strong>${zip.purchases}</strong> purchases</div>
+            <div style="margin: 0.3rem 0;"><strong>${zip.pct}%</strong> of market</div>
+        </div>
+    `;
+
+    rect.bindPopup(popupContent);
+});
+
+// Add centered labels
+zipCodes.forEach(zip => {
+    const center = L.latLngBounds(zip.coords).getCenter();
+    const label = L.marker(center, {
+        icon: L.divIcon({
+            html: `<div style="
+                background: white;
+                padding: 0.5rem 0.75rem;
+                border-radius: 4px;
+                border: 2px solid ${zip.color};
+                font-weight: 700;
+                font-size: 1.1rem;
+                color: ${zip.color};
+                text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+                pointer-events: none;
+            ">${zip.code}</div>`,
+            iconSize: [120, 35],
+            className: 'zip-label'
+        })
+    }).addTo(map);
+});
+</script>
+
+</body>
+</html>

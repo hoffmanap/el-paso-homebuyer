@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Analysis - El Paso Homebuyer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafbfc;
+            color: #1a202c;
+            line-height: 1.6;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e2e8f0;
+            z-index: 1000;
+            padding: 0 2rem;
+        }
+
+        nav .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+
+        nav .logo {
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: -0.5px;
+            color: #2d5a7b;
+        }
+
+        nav .links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #64748b;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: #2d5a7b;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .content {
+            margin-top: 80px;
+            padding: 3rem 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #0f172a;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            color: #64748b;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #0f172a;
+        }
+
+        .section-divider {
+            width: 40px;
+            height: 3px;
+            background: #e07856;
+            margin-bottom: 1.5rem;
+            border-radius: 1px;
+        }
+
+        .section-intro {
+            font-size: 1.05rem;
+            color: #475569;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .section h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #1a202c;
+        }
+
+        .finding {
+            background: #f0f6ff;
+            border-left: 3px solid #2d5a7b;
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin: 2rem 0;
+        }
+
+        .finding strong {
+            color: #2d5a7b;
+        }
+
+        .chart-container {
+            margin: 2.5rem 0;
+            background: white;
+            border-radius: 8px;
+            padding: 0;
+            height: 500px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .chart-container.small {
+            height: 400px;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 1024px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+            font-size: 0.9rem;
+        }
+
+        footer .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+        }
+
+        @media (max-width: 640px) {
+            .content {
+                padding: 1.5rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.6rem;
+            }
+
+            nav .links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-container">
+        <div class="logo">El Paso Homebuyer</div>
+        <div class="links">
+            <a href="index.html">Overview</a>
+            <a href="analysis.html" style="color: #2d5a7b; font-weight: 600;">Full Analysis</a>
+            <a href="mortgage.html">Mortgage Strategy</a>
+            <a href="map.html">Geographic Map</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="content">
+        <div class="page-header">
+            <h1>Full Analysis</h1>
+            <p>Comprehensive demographic, affordability, and geographic findings from 849 first-time homebuyer transactions</p>
+        </div>
+
+        <!-- Demographics -->
+        <div class="section">
+            <h2>Buyer Demographics</h2>
+            <div class="section-divider"></div>
+            <p class="section-intro">First-time homebuyers in El Paso are predominantly young professionals and growing families aged 25–44, with 50% concentrated in the 25–34 age bracket—prime household formation years.</p>
+            
+            <div class="two-column">
+                <div class="chart-container">
+                    <div id="ageChart"></div>
+                </div>
+                <div class="chart-container">
+                    <div id="incomeChart"></div>
+                </div>
+            </div>
+
+            <div class="finding">
+                <strong>Finding:</strong> The 25–34 age bracket represents exactly 50% of all first-time buyers. Income concentration is in the $50k–$150k range (75.1% of buyers), with median income at $97k. Only 7.2% earn below $50k, indicating limited down payment savings across the cohort.
+            </div>
+        </div>
+
+        <!-- Geographic Origin -->
+        <div class="section">
+            <h2>Geographic Origin: Local vs. In-Migration</h2>
+            <div class="section-divider"></div>
+            <p class="section-intro">Understanding buyer origin reveals the primary drivers of demand and market pressure. Nearly three-quarters of first-time buyers originate from within Texas, with the vast majority staying in El Paso specifically.</p>
+            
+            <div class="two-column">
+                <div class="chart-container small">
+                    <div id="originChart"></div>
+                </div>
+                <div class="chart-container small">
+                    <div id="stateOriginChart"></div>
+                </div>
+            </div>
+
+            <div class="finding">
+                <strong>Policy Implication:</strong> El Paso's first-time homebuyer demand is primarily <em>endogenous</em>—driven by local household formation and young adults aging into homeownership. Out-of-state migration, while present at 19.6%, is secondary to local household formation. This suggests market strategies should focus on expanding supply for local cohorts rather than controlling external demand.
+            </div>
+        </div>
+
+        <!-- Affordability -->
+        <div class="section">
+            <h2>Affordability: Price-to-Income Analysis</h2>
+            <div class="section-divider"></div>
+            <p class="section-intro">The price-to-income (P/I) ratio is a standard affordability metric. Values below 3x are typically considered reasonable entry-point pricing. El Paso's local cohort achieves 2.75x, but regional in-movers face 3.09x—indicating elevated affordability stress.</p>
+            
+            <div class="chart-container small">
+                <div id="priceToIncomeChart"></div>
+            </div>
+
+            <h3>Detailed Affordability Profiles</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 1.5rem 0;">
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 0.85rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem;">Local Metro Base (581 buyers)</div>
+                    <div style="font-size: 0.95rem; color: #1a202c; line-height: 1.8;">
+                        <strong>Median Income:</strong> $97,000<br>
+                        <strong>Median Price:</strong> $267,000<br>
+                        <strong>P/I Ratio:</strong> 2.75x
+                    </div>
+                </div>
+                <div style="background: #fef9f3; padding: 1.5rem; border-radius: 8px; border: 1px solid #fed7aa;">
+                    <div style="font-size: 0.85rem; font-weight: 600; color: #b45309; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem;">Regional TX/NM (70 buyers)</div>
+                    <div style="font-size: 0.95rem; color: #1a202c; line-height: 1.8;">
+                        <strong>Median Income:</strong> $97,000<br>
+                        <strong>Median Price:</strong> $299,900<br>
+                        <strong>P/I Ratio:</strong> 3.09x ⚠️
+                    </div>
+                </div>
+                <div style="background: #f1f5f9; padding: 1.5rem; border-radius: 8px; border: 1px solid #cbd5e1;">
+                    <div style="font-size: 0.85rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem;">Long-Distance Out-of-State (198 buyers)</div>
+                    <div style="font-size: 0.95rem; color: #1a202c; line-height: 1.8;">
+                        <strong>Median Income:</strong> $89,000<br>
+                        <strong>Median Price:</strong> $264,950<br>
+                        <strong>P/I Ratio:</strong> 2.98x
+                    </div>
+                </div>
+            </div>
+
+            <div class="finding">
+                <strong>Surprise Finding:</strong> Out-of-state buyers have <em>lower median incomes</em> ($89k vs. $97k for local/regional), yet still achieve comparable purchase prices. This suggests they either bring proceeds from prior home sales, receive more frequent gift funds, or carry higher debt loads to qualify.
+            </div>
+        </div>
+
+        <!-- Destination Concentration -->
+        <div class="section">
+            <h2>Geographic Concentration: Where Buyers Concentrate</h2>
+            <div class="section-divider"></div>
+            <p class="section-intro">Despite El Paso's geographic extent, first-time buyer purchases are highly concentrated in three zip code areas, accounting for nearly 60% of all activity.</p>
+            
+            <div class="chart-container small">
+                <div id="destinationChart"></div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 1.5rem; font-weight: 700; color: #2d5a7b; margin-bottom: 0.5rem;">79928</div>
+                    <div style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem;">South/Southeast El Paso</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: #e07856;">27.0%</div>
+                    <p style="font-size: 0.85rem; color: #475569; margin-top: 0.75rem;">Most popular destination; driven by new construction and affordability</p>
+                </div>
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 1.5rem; font-weight: 700; color: #2d5a7b; margin-bottom: 0.5rem;">79938</div>
+                    <div style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem;">Far East Montana Corridor</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: #e07856;">19.2%</div>
+                    <p style="font-size: 0.85rem; color: #475569; margin-top: 0.75rem;">Suburban expansion eastward</p>
+                </div>
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 1.5rem; font-weight: 700; color: #2d5a7b; margin-bottom: 0.5rem;">79934</div>
+                    <div style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem;">Northeast Frontier</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: #e07856;">12.4%</div>
+                    <p style="font-size: 0.85rem; color: #475569; margin-top: 0.75rem;">Secondary growth corridor</p>
+                </div>
+            </div>
+
+            <div class="finding">
+                <strong>Key Observation:</strong> The top three zip codes capture 58.6% of all first-time buyer purchases. This concentration suggests that inventory availability, new construction, school district reputation, and affordability in these areas drive disproportionate demand. Policy could explore incentives to expand inventory in underutilized but desirable areas to relieve pressure in concentrated markets.
+            </div>
+        </div>
+
+        <!-- Housing Product -->
+        <div class="section">
+            <h2>Housing Product Characteristics</h2>
+            <div class="section-divider"></div>
+            <p class="section-intro">The median first-time buyer home is 4 bedrooms, 2 bathrooms, approximately 1,927 square feet. This represents a notable shift from older central urban stock (3 bed, 1 bath, 1,628 sqft).</p>
+            
+            <div class="two-column">
+                <div class="chart-container small">
+                    <div id="bedroomChart"></div>
+                </div>
+                <div class="chart-container small">
+                    <div id="bathroomChart"></div>
+                </div>
+            </div>
+
+            <p class="section-intro" style="margin-top: 2rem;">The preference for 4-bed/2-bath units reflects family formation patterns. Many first-time buyers are young parents or anticipate children. The shift from older 3-bed/1-bath urban units to suburban 4-bed/2-bath homes reflects broader suburban migration patterns and the concentration of new construction in the 79928, 79938, and 79934 zip codes.</p>
+        </div>
+
+        <!-- Mortgage Products -->
+        <div class="section">
+            <h2>Mortgage Product Strategy</h2>
+            <div class="section-divider"></div>
+            <p class="section-intro">The distribution of mortgage product types reveals important insights about buyer financial profiles and available credit. Government-backed lending dominates, indicating limited down payment savings across the cohort.</p>
+            
+            <div class="two-column">
+                <div class="chart-container small">
+                    <div id="mortgageTypeChart"></div>
+                </div>
+                <div style="background: #f8f9fa; padding: 2rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 0.85rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem;">Distribution</div>
+                    <ul style="list-style: none; font-size: 0.95rem; color: #1a202c; line-height: 2;">
+                        <li><strong>FHA:</strong> 43.6% (370 buyers)</li>
+                        <li><strong>VA:</strong> 33.7% (286 buyers)</li>
+                        <li><strong>Conventional:</strong> 22.6% (192 buyers)</li>
+                    </ul>
+                    <p style="margin-top: 1.5rem; font-size: 0.85rem; color: #64748b;"><strong>77.3%</strong> of loans are government-backed, indicating most buyers lack substantial down payment savings.</p>
+                </div>
+            </div>
+
+            <h3>Mortgage Product by Price Tier</h3>
+            <div class="chart-container">
+                <div id="mortgageByPriceChart"></div>
+            </div>
+
+            <p class="section-intro">Mortgage product selection varies dramatically by purchase price. Buyers in the under-$200k range rely overwhelmingly on FHA (55.0%) and VA (21.2%). Those buying in the $300k+ tier shift toward conventional loans (35.5%) and maintain strong VA presence (34.8%). This pattern reflects both buyers' financial capacity and the distribution of affordable entry-point inventory.</p>
+        </div>
+
+        <!-- Where Different Cohorts Buy -->
+        <div class="section">
+            <h2>Destination Patterns by Buyer Origin</h2>
+            <div class="section-divider"></div>
+            <p class="section-intro">Geographic clustering of buyer origins by price tier reveals clear market segmentation.</p>
+            
+            <div class="chart-container">
+                <div id="originByPriceChart"></div>
+            </div>
+
+            <div class="finding">
+                <strong>Key Observation:</strong> Out-of-state buyers concentrate in the $200k–$300k price tiers (32.3% in the $250k-$300k range), suggesting they arrive with sufficient capital to access mid-market suburban new construction. Local buyers show a much flatter distribution across all price tiers. Out-of-state movers may be relocating with equity from prior home sales or job offers from employers offering relocation packages.
+            </div>
+        </div>
+
+        <!-- Conclusions -->
+        <div class="section">
+            <h2>Policy Conclusions & Recommendations</h2>
+            <div class="section-divider"></div>
+            
+            <h3>1. El Paso's Market is Locally Driven</h3>
+            <p>Nearly three-quarters of first-time buyer activity is from in-state and local sources. The narrative of out-of-state demand inflating local prices does not strongly support this data. Instead, policy should focus on expanding supply and affordability for endogenous household formation.</p>
+            
+            <h3>2. Affordability is Manageable but Tightening</h3>
+            <p>The 2.75x price-to-income ratio for local buyers is reasonable, but regional in-movers face 3.09x ratios. Without supply expansion, affordability stress will increase. The dominance of FHA (43.6%) and VA (33.7%) indicates limited savings capacity across the cohort.</p>
+            
+            <h3>3. Demand is Highly Concentrated Geographically</h3>
+            <p>Nearly 60% of first-time buyers purchase in just three zip codes (79928, 79938, 79934). This concentration creates supply scarcity and inflates prices relative to broader El Paso. Policy could explore incentives to expand inventory in underutilized areas.</p>
+            
+            <h3>4. Product Type and Price Are Tightly Linked</h3>
+            <p>The dominance of FHA in lower-price tiers ($150k–$200k) versus conventional in upper tiers ($300k+) suggests that entry-point affordability is the critical policy lever. Expanding down-payment assistance programs, shared equity models, and community land trusts could unlock buyer cohorts unable to access FHA financing.</p>
+            
+            <h3>5. Military Population is a Stabilizing Force</h3>
+            <p>VA-backed loans represent one-third of all first-time purchases. El Paso's military presence is a substantial advantage for household formation and provides a policy anchor. Military family relocation, base stability, and consistent income support broader demand.</p>
+
+            <div class="finding" style="margin-top: 2rem;">
+                <strong>Bottom Line:</strong> El Paso's first-time homebuyer market is resilient, locally rooted, and driven by household formation rather than external migration. The challenge is not demand, but supply: expanding inventory in high-demand corridors (79928, 79938, 79934) and broadening access to down-payment capital for income-constrained local buyers.
+            </div>
+        </div>
+
+        <!-- Methodology -->
+        <div class="section">
+            <h2>Methodology & Data Notes</h2>
+            <div class="section-divider"></div>
+            
+            <h3>Sample Definition</h3>
+            <p><strong>849 first-time homebuyer transactions (2025).</strong> Primary home purchase loans where the borrower is aged 25-44. Includes FHA, VA, conventional, and USDA loan types. Excludes refinances, home-equity loans, and non-primary purchases.</p>
+            
+            <h3>Data Sources</h3>
+            <ul style="margin-left: 2rem; margin: 1rem 0 1rem 2rem; color: #475569;">
+                <li><strong>HMDA (Home Mortgage Disclosure Act):</strong> Loan terms, demographics, loan purposes, and underwriting outcomes</li>
+                <li><strong>MLS (Multiple Listing Service):</strong> Property characteristics, pricing, and location</li>
+                <li><strong>Data Axle:</strong> Historical mover tracking and prior geographic locations</li>
+            </ul>
+            
+            <h3>Geographic Scope</h3>
+            <p>El Paso County, Texas. Analysis focuses on specific zip codes and regional categories (Texas vs. regional adjacent states vs. long-distance out-of-state).</p>
+            
+            <h3>Important Notes</h3>
+            <p>Income figures in HMDA are reported in thousands; all figures have been scaled to face values. Price-to-income ratios use stated household income and median purchase price at point of sale. This analysis is for informational purposes; figures may be subject to data processing and rounding.</p>
+        </div>
+
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <p><strong>El Paso First-Time Homebuyer Analysis</strong> | Data Period: 2025</p>
+        <p style="margin-top: 0.5rem; color: #94a3b8; font-size: 0.85rem;">Data sources: HMDA, MLS, Data Axle | For informational purposes only</p>
+    </div>
+</footer>
+
+<script>
+// Plotly configuration
+const plotlyConfig = { responsive: true, displayModeBar: false };
+const plotlyLayout = {
+    font: { family: "'Inter', sans-serif", color: '#1a202c' },
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
+    showlegend: false,
+    margin: { l: 60, r: 40, t: 40, b: 60 }
+};
+
+// Age Distribution
+Plotly.newPlot('ageChart', [{
+    x: ['<25', '25–34', '35–44'],
+    y: [63, 430, 356],
+    type: 'bar',
+    marker: {color: '#2d5a7b', line: {width: 0}},
+    hovertemplate: '<b>%{x}</b><br>%{y} buyers<extra></extra>'
+}], {
+    ...plotlyLayout,
+    title: { text: '<b>Age Distribution</b>', font: { size: 16 } },
+    xaxis: { title: 'Age Bracket', showgrid: false },
+    yaxis: { title: 'Number of Buyers', showgrid: true, gridwidth: 1, gridcolor: '#e2e8f0' }
+}, plotlyConfig);
+
+// Income Distribution
+Plotly.newPlot('incomeChart', [{
+    x: ['$0–50k', '$50k–100k', '$100k–150k', '$150k–200k', '$200k–250k', '$250k+'],
+    y: [61, 392, 241, 76, 27, 52],
+    type: 'bar',
+    marker: {color: '#e07856', line: {width: 0}},
+    hovertemplate: '<b>%{x}</b><br>%{y} buyers<extra></extra>'
+}], {
+    ...plotlyLayout,
+    title: { text: '<b>Income Distribution</b>', font: { size: 16 } },
+    xaxis: { title: 'Income Bracket', showgrid: false },
+    yaxis: { title: 'Number of Buyers', showgrid: true, gridwidth: 1, gridcolor: '#e2e8f0' }
+}, plotlyConfig);
+
+// Origin Chart
+Plotly.newPlot('originChart', [{
+    labels: ['Local Metro Base', 'Regional TX/NM', 'Long-Distance Out-of-State'],
+    values: [581, 70, 198],
+    type: 'pie',
+    marker: {colors: ['#2d5a7b', '#e07856', '#64748b'], line: {color: white, width: 2}},
+    textposition: 'inside',
+    textinfo: 'label+percent',
+    hovertemplate: '<b>%{label}</b><br>%{value} buyers (%{percent})<extra></extra>'
+}], {
+    ...plotlyLayout,
+    title: { text: '<b>Buyer Origin</b>', font: { size: 16 } }
+}, plotlyConfig);
+
+// State Origins
+Plotly.newPlot('stateOriginChart', [{
+    x: ['Texas', 'California', 'New Mexico', 'Arizona', 'Other'],
+    y: [627, 42, 24, 42, 114],
+    type: 'bar',
+    marker: {color: '#64748b', line: {width: 0}},
+    hovertemplate: '<b>%{x}</b><br>%{y} buyers<extra></extra>'
+}], {
+    ...plotlyLayout,
+    title: { text: '<b>State of Origin</b>', font: { size: 16 } },
+    xaxis: { title: 'State', showgrid: false },
+    yaxis: { title: 'Number of Buyers', showgrid: true, gridwidth: 1, gridcolor: '#e2e8f0' }
+}, plotlyConfig);
+
+// Price-to-Income
+Plotly.newPlot('priceToIncomeChart', [{
+    x: ['Local Metro\nBase', 'Regional\nTX/NM', 'Long-Distance\nOut-of-State'],
+    y: [2.75, 3.09, 2.98],
+    type: 'bar',
+    marker: {color: ['#2d5a7b', '#e07856', '#64748b'], line: {width: 0}},
+    hovertemplate: '<b>%{x}</b><br>P/I Ratio: %{y}x<extra></extra>'
+}], {
+    ...plotlyLayout,
+    title: { text: '<b>Price-to-Income Ratio by Origin</b>', font: { size: 16 } },
+    xaxis: { title: 'Buyer Origin Type', showgrid: false },
+    yaxis: { title: 'P/I Ratio (lower is better)', range: [0, 3.5], showgrid: true, gridwidth: 1, gridcolor: '#e2e8f0' }
+}, plotlyConfig);
+
+// Destination Zip Codes
+Plotly.newPlot('destinationChart', [{
+    x: ['79928', '79938', '79934', '79912', '79936', 'Other'],
+    y: [210, 163, 105, 65, 62, 244],
+    type: 'bar',
+    marker: {color: '#2d5a7b', line: {width: 0}},
+    hovertemplate: '<b>%{x}</b><br>%{y} purchases<extra></extra>'
+}], {
+    ...plotlyLayout,
+    title: { text: '<b>Top Destination Zip Codes</b>', font: { size: 16 } },
+    xaxis: { title: 'Zip Code', showgrid: false },
+    yaxis: { title: 'Number of Purchases', showgrid: true, gridwidth: 1, gridcolor: '#e2e8f0' }
+}, plotlyConfig);
+
+// Bedrooms
+Plotly.newPlot('bedroomChart', [{
+    x: ['2 bed', '3 bed', '4 bed', '5+ bed'],
+    y: [65, 350, 425, 9],
+    type: 'bar',
+    marker: {color: '#2d5a7b', line: {width: 0}},
+    hovertemplate: '<b>%{x}</b><br>%{y} homes<extra></extra>'
+}], {
+    ...plotlyLayout,
+    title: { text: '<b>Bedrooms (Median: 4)</b>', font: { size: 16 } },
+    xaxis: { title: 'Number of Bedrooms', showgrid: false },
+    yaxis: { title: 'Number of Properties', showgrid: true, gridwidth: 1, gridcolor: '#e2e8f0' }
+}, plotlyConfig);
+
+// Bathrooms
+Plotly.newPlot('bathroomChart', [{
+    x: ['1 bath', '1.5 bath', '2 bath', '2.5+ bath'],
+    y: [280, 195, 320, 54],
+    type: 'bar',
+    marker: {color: '#e07856', line: {width: 0}},
+    hovertemplate: '<b>%{x}</b><br>%{y} homes<extra></extra>'
+}], {
+    ...plotlyLayout,
+    title: { text: '<b>Bathrooms (Median: 2.0)</b>', font: { size: 16 } },
+    xaxis: { title: 'Number of Bathrooms', showgrid: false },
+    yaxis: { title: 'Number of Properties', showgrid: true, gridwidth: 1, gridcolor: '#e2e8f0' }
+}, plotlyConfig);
+
+// Mortgage Type
+Plotly.newPlot('mortgageTypeChart', [{
+    labels: ['FHA', 'VA', 'Conventional'],
+    values: [370, 286, 192],
+    type: 'pie',
+    marker: {colors: ['#2d5a7b', '#e07856', '#64748b'], line: {color: white, width: 2}},
+    textposition: 'inside',
+    textinfo: 'label+percent',
+    hovertemplate: '<b>%{label}</b><br>%{value} buyers (%{percent})<extra></extra>'
+}], {
+    ...plotlyLayout,
+    title: { text: '<b>Mortgage Product Distribution</b>', font: { size: 16 } }
+}, plotlyConfig);
+
+// Mortgage by Price
+Plotly.newPlot('mortgageByPriceChart', [
+    {
+        x: ['Under $200k', '$200k–$300k', '$300k+'],
+        y: [55.0, 51.1, 29.7],
+        name: 'FHA',
+        type: 'bar',
+        marker: {color: '#2d5a7b', line: {width: 0}}
+    },
+    {
+        x: ['Under $200k', '$200k–$300k', '$300k+'],
+        y: [21.2, 35.1, 34.8],
+        name: 'VA',
+        type: 'bar',
+        marker: {color: '#e07856', line: {width: 0}}
+    },
+    {
+        x: ['Under $200k', '$200k–$300k', '$300k+'],
+        y: [23.8, 13.6, 35.5],
+        name: 'Conventional',
+        type: 'bar',
+        marker: {color: '#64748b', line: {width: 0}}
+    }
+], {
+    ...plotlyLayout,
+    title: { text: '<b>Mortgage Product by Price Tier</b>', font: { size: 16 } },
+    xaxis: { title: 'Purchase Price Range', showgrid: false },
+    yaxis: { title: 'Percentage (%)', showgrid: true, gridwidth: 1, gridcolor: '#e2e8f0' },
+    barmode: 'group'
+}, plotlyConfig);
+
+// Origin by Price Tier
+Plotly.newPlot('originByPriceChart', [
+    {
+        x: ['Under $150k', '$150k–$200k', '$200k–$250k', '$250k–$300k', '$300k–$350k', '$350k–$400k', '$400k+'],
+        y: [0.9, 10.0, 26.3, 26.7, 12.7, 7.6, 15.8],
+        name: 'Local Metro Base',
+        type: 'bar',
+        marker: {color: '#2d5a7b', line: {width: 0}}
+    },
+    {
+        x: ['Under $150k', '$150k–$200k', '$200k–$250k', '$250k–$300k', '$300k–$350k', '$350k–$400k', '$400k+'],
+        y: [0.0, 8.6, 21.4, 20.0, 22.9, 8.6, 18.6],
+        name: 'Regional TX/NM',
+        type: 'bar',
+        marker: {color: '#e07856', line: {width: 0}}
+    },
+    {
+        x: ['Under $150k', '$150k–$200k', '$200k–$250k', '$250k–$300k', '$300k–$350k', '$350k–$400k', '$400k+'],
+        y: [0.5, 5.1, 27.8, 32.3, 14.6, 7.1, 12.6],
+        name: 'Long-Distance Out-of-State',
+        type: 'bar',
+        marker: {color: '#64748b', line: {width: 0}}
+    }
+], {
+    ...plotlyLayout,
+    title: { text: '<b>Where Different Cohorts Purchase</b>', font: { size: 16 } },
+    xaxis: { title: 'Purchase Price Range', showgrid: false },
+    yaxis: { title: 'Percentage of Cohort (%)', showgrid: true, gridwidth: 1, gridcolor: '#e2e8f0' },
+    barmode: 'group'
+}, plotlyConfig);
+</script>
+
+</body>
+</html>
