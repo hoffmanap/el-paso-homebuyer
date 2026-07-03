@@ -7,165 +7,404 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
     <style>
-        :root {
-            --bg-color: #f4f7f9;
-            --surface: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --primary: #2563eb;
-            --border: #e2e8f0;
-        }
-        
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.6;
+            background: #f8fafc;
+            color: #0f172a;
+            line-height: 1.7;
         }
 
-        /* Modern Navigation */
+        a { color: inherit; text-decoration: none; }
+
+        /* Navigation */
         nav {
-            position: sticky;
-            top: 0;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid var(--border);
-            z-index: 100;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        nav h1 { font-size: 1.25rem; font-weight: 700; color: var(--primary); }
-        
-        .nav-links a {
-            margin-left: 1.5rem;
-            text-decoration: none;
-            color: var(--text-muted);
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-        
-        .nav-links a:hover { color: var(--primary); }
-
-        /* Dashboard Layout */
-        .container {
-            max-width: 1400px;
-            margin: 2rem auto;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e2e8f0;
+            z-index: 1000;
             padding: 0 2rem;
         }
 
-        .header-section { margin-bottom: 3rem; text-align: center; }
-        .header-section h2 { font-size: 2.5rem; margin-bottom: 0.5rem; }
-        .header-section p { color: var(--text-muted); font-size: 1.1rem; }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            gap: 2rem;
+        nav .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 65px;
         }
 
-        /* Glassmorphic Chart Cards */
-        .chart-card {
-            background: var(--surface);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            border: 1px solid var(--border);
-            transition: transform 0.2s;
+        nav .logo { font-weight: 700; font-size: 1.1rem; color: #2d5a7b; }
+
+        nav .links { display: flex; gap: 2rem; align-items: center; }
+        nav a { font-size: 0.95rem; font-weight: 500; color: #64748b; transition: color 0.2s; }
+        nav a:hover { color: #2d5a7b; }
+
+        /* Hero */
+        .hero {
+            margin-top: 65px;
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+            border-bottom: 1px solid #e2e8f0;
         }
 
-        .chart-card:hover { transform: translateY(-2px); }
-        .chart-card h3 { font-size: 1.1rem; margin-bottom: 1rem; color: var(--text-main); }
+        .hero-container { max-width: 900px; margin: 0 auto; text-align: center; }
+        .hero h1 { font-size: 3.5rem; font-weight: 700; line-height: 1.1; margin-bottom: 1.5rem; color: #0f172a; letter-spacing: -1px; }
+        .hero p { font-size: 1.25rem; color: #475569; margin-bottom: 2.5rem; }
+
+        .cta-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
         
-        .chart-container { width: 100%; height: 400px; }
+        .btn {
+            padding: 0.85rem 1.75rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-primary { background: #2d5a7b; color: white; box-shadow: 0 4px 6px -1px rgba(45, 90, 123, 0.2); }
+        .btn-primary:hover { background: #1e3f57; transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(45, 90, 123, 0.3); }
+        .btn-secondary { background: white; color: #2d5a7b; border: 1px solid #cbd5e1; }
+        .btn-secondary:hover { background: #f8fafc; border-color: #2d5a7b; transform: translateY(-2px); }
 
+        /* Container & Sections */
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
+        .sections { padding: 4rem 0; }
+        .section { padding: 4rem 0; border-bottom: 1px solid #e2e8f0; }
+        .section:last-child { border-bottom: none; }
+        
+        .section h2 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1.5rem; color: #0f172a; letter-spacing: -0.5px; }
+        .section h3 { font-size: 1.4rem; font-weight: 600; margin-top: 2rem; margin-bottom: 1rem; color: #1a202c; }
+        .section-intro { font-size: 1.1rem; color: #475569; margin-bottom: 2rem; line-height: 1.8; max-width: 900px; }
+
+        /* Grids & Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        
+        .card-value { font-size: 2.5rem; font-weight: 700; color: #2d5a7b; line-height: 1.2; }
+        .card-label { font-size: 0.9rem; color: #64748b; margin-top: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+        .card-accent { width: 4px; height: 32px; background: #e07856; margin-bottom: 1.5rem; border-radius: 2px; }
+
+        .finding {
+            background: #eff6ff;
+            border-left: 4px solid #2d5a7b;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 2.5rem 0;
+            font-size: 1.1rem;
+            color: #1e3a8a;
+        }
+        .finding strong { color: #1e40af; font-weight: 700; }
+
+        /* Chart Integration Layout */
+        .content-with-chart {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin: 3rem 0;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            height: 400px;
+        }
+
+        /* Callout */
+        .callout { background: #faf9f7; padding: 2rem; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .callout-title { font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; margin-bottom: 0.5rem; }
+        .callout-value { font-size: 2rem; font-weight: 700; color: #0f172a; }
+
+        footer { background: #0f172a; color: #cbd5e1; padding: 4rem 2rem; font-size: 0.95rem; }
+        footer .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; }
+        footer h4 { color: white; margin-bottom: 1.5rem; font-size: 1.1rem; font-weight: 600; }
+        footer a { color: #94a3b8; transition: color 0.2s; }
+        footer a:hover { color: white; }
+
+        @media (max-width: 1024px) {
+            .content-with-chart { grid-template-columns: 1fr; gap: 2rem; }
+        }
     </style>
 </head>
 <body>
 
-    <nav>
-        <h1>EP Housing Analytics</h1>
-        <div class="nav-links">
-            <a href="index.html">Overview</a>
+<nav>
+    <div class="nav-container">
+        <div class="logo">El Paso Homebuyer</div>
+        <div class="links">
+            <a href="#overview">Overview</a>
             <a href="analysis.html">Full Analysis</a>
-            <a href="map.html">Interactive Map</a>
-        </div>
-    </nav>
-
-    <div class="container">
-        <div class="header-section">
-            <h2>Market Dynamics & Affordability</h2>
-            <p>Data-driven insights into first-time homebuyer patterns in El Paso County</p>
-        </div>
-
-        <div class="dashboard-grid">
-            <div class="chart-card">
-                <h3>Origin vs. Destination Migration Patterns</h3>
-                <div id="migrationChart" class="chart-container"></div>
-            </div>
-
-            <div class="chart-card">
-                <h3>Affordability Squeeze ($250k - $350k Tier)</h3>
-                <div id="affordabilityChart" class="chart-container"></div>
-            </div>
+            <a href="mortgage.html">Mortgage Strategy</a>
+            <a href="map.html">Geographic Map</a>
         </div>
     </div>
+</nav>
 
-    <script>
-        // Shared modern layout settings for all Plotly charts
-        const layoutConfig = {
-            font: { family: 'Inter, sans-serif' },
-            paper_bgcolor: 'rgba(0,0,0,0)', // Transparent background
-            plot_bgcolor: 'rgba(0,0,0,0)',
-            margin: { t: 20, r: 20, b: 40, l: 40 },
-            // FIXED: Notice 'white' is not used directly, and grid colors use quoted strings
-            xaxis: { gridcolor: '#e2e8f0', zerolinecolor: '#e2e8f0' },
-            yaxis: { gridcolor: '#e2e8f0', zerolinecolor: '#e2e8f0' } 
-        };
+<div class="hero">
+    <div class="hero-container">
+        <h1>Understanding El Paso's First-Time Homebuyers</h1>
+        <p>Data-driven insights into buyer demographics, affordability, and market dynamics</p>
+        <div class="cta-group">
+            <a href="analysis.html" class="btn btn-primary">View Full Analysis</a>
+            <a href="map.html" class="btn btn-secondary">Explore the Map</a>
+        </div>
+    </div>
+</div>
 
-        const config = { responsive: true, displayModeBar: false };
+<div class="container">
+    <div class="sections">
 
-        // Chart 1: Migration Flow (Bar Chart)
-        const migrationData = [{
-            x: ['Central Core', 'Northeast (79934)', 'Far East (79938)', 'Westside'],
-            y: [-15, 22, 45, 8],
-            type: 'bar',
-            marker: {
-                color: ['#ef4444', '#3b82f6', '#2563eb', '#93c5fd'],
-                borderRadius: 4
-            }
-        }];
-        
-        Plotly.newPlot('migrationChart', migrationData, layoutConfig, config);
+        <!-- Overview Section -->
+        <div id="overview" class="section">
+            <h2>Market Overview</h2>
+            <p class="section-intro">This analysis examines 849 first-time homebuyer transactions across El Paso County, focusing on buyers aged 25–44 making primary home purchases. The data reveals a market driven primarily by local household formation, with distinct geographic concentration and affordability profiles varying by buyer origin.</p>
+            
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-accent"></div>
+                    <div class="card-value">849</div>
+                    <div class="card-label">Buyers Analyzed</div>
+                </div>
+                <div class="card">
+                    <div class="card-accent"></div>
+                    <div class="card-value">$267k</div>
+                    <div class="card-label">Median Price</div>
+                </div>
+                <div class="card">
+                    <div class="card-accent"></div>
+                    <div class="card-value">$97k</div>
+                    <div class="card-label">Median Income</div>
+                </div>
+                <div class="card">
+                    <div class="card-accent"></div>
+                    <div class="card-value">2.75x</div>
+                    <div class="card-label">P/I Ratio</div>
+                </div>
+            </div>
 
-        // Chart 2: Affordability Line Chart
-        const affordabilityData = [
-            {
-                x: ['2020', '2021', '2022', '2023', '2024', '2025'],
-                y: [195000, 215000, 245000, 260000, 275000, 285000],
-                name: 'Median Home Price',
-                type: 'scatter',
-                mode: 'lines+markers',
-                line: { color: '#2563eb', width: 3 }
-            },
-            {
-                x: ['2020', '2021', '2022', '2023', '2024', '2025'],
-                y: [165000, 170000, 175000, 185000, 190000, 195000],
-                name: '80% AMI Buying Power',
-                type: 'scatter',
-                mode: 'lines+markers',
-                line: { color: '#ef4444', width: 3, dash: 'dot' }
-            }
-        ];
+            <div class="finding">
+                <strong>Key Finding:</strong> El Paso's first-time homebuyer market is locally driven. Nearly three-quarters of buyers come from within Texas, with the majority staying in or returning to El Paso specifically. Out-of-state migration pressure exists but is secondary to endogenous household formation.
+            </div>
+        </div>
 
-        // Merge shared layout with chart-specific layout
-        const affordLayout = { ...layoutConfig, legend: { orientation: 'h', y: -0.2 } };
-        Plotly.newPlot('affordabilityChart', affordabilityData, affordLayout, config);
+        <!-- Demographics -->
+        <div class="section">
+            <h2>Who Are the Buyers?</h2>
+            <p class="section-intro">First-time homebuyers in El Paso are predominantly young professionals and growing families aged 25–44, concentrated in the prime family-formation years (25–34 age bracket).</p>
+            
+            <div class="content-with-chart">
+                <div>
+                    <h3>Age & Family Formation</h3>
+                    <p>The 25–34 age bracket represents exactly 50% of all first-time buyers, indicating strong household formation activity. A further 42% are 35–44, meaning 92% of the market is in their peak wealth-building and family-expansion years. The cohort skews younger than typical homebuyer populations nationally.</p>
+                    
+                    <h3 style="margin-top: 1.5rem;">Income Profile</h3>
+                    <p>The income distribution is heavily concentrated in the $50k–$150k range, where 75.1% of buyers fall. The median stated income is $97,000. Only 7.2% earn below $50k, suggesting these buyers rely on co-signer income, gifts of equity, or purchases at very affordable price points.</p>
+                </div>
+                <div id="demoChart" class="chart-container"></div>
+            </div>
+        </div>
 
-    </script>
+        <!-- Origin Patterns -->
+        <div class="section">
+            <h2>Where Do Buyers Come From?</h2>
+            <p class="section-intro">Understanding buyer origin reveals the primary drivers of demand: local household formation versus in-migration.</p>
+            
+            <div class="content-with-chart">
+                <div id="originChart" class="chart-container"></div>
+                <div>
+                    <div class="cards-grid" style="grid-template-columns: 1fr; margin: 0;">
+                        <div class="card">
+                            <div class="card-accent" style="background: #2d5a7b;"></div>
+                            <div class="card-value">73.9%</div>
+                            <div class="card-label">From Texas</div>
+                            <p style="margin-top: 0.75rem; font-size: 0.95rem; color: #64748b;">Majority staying in El Paso Metro</p>
+                        </div>
+                        <div class="card">
+                            <div class="card-accent" style="background: #e07856;"></div>
+                            <div class="card-value">6.5%</div>
+                            <div class="card-label">Regional (AZ, NM)</div>
+                            <p style="margin-top: 0.75rem; font-size: 0.95rem; color: #64748b;">Adjacent state movers</p>
+                        </div>
+                        <div class="card">
+                            <div class="card-accent" style="background: #64748b;"></div>
+                            <div class="card-value">19.6%</div>
+                            <div class="card-label">Long-Distance</div>
+                            <p style="margin-top: 0.75rem; font-size: 0.95rem; color: #64748b;">Out-of-state arrivals</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="finding">
+                <strong>Policy Implication:</strong> El Paso's first-time homebuyer demand is primarily <em>endogenous</em>—driven by local household formation and young adults aging into homeownership. Out-of-state migration, while present, is a secondary factor in price dynamics.
+            </div>
+        </div>
+
+        <!-- Affordability -->
+        <div class="section">
+            <h2>Affordability Analysis</h2>
+            <p class="section-intro">The price-to-income (P/I) ratio is a standard affordability metric: median purchase price divided by median household income. Values below 3x are typically considered affordable entry-point pricing.</p>
+            
+            <div style="background: #f8f9fa; padding: 3rem; border-radius: 12px; margin: 2rem 0; border: 1px solid #e2e8f0;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem;">
+                    <div>
+                        <div style="font-size: 0.95rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem;">Local El Paso Base</div>
+                        <div style="font-size: 1.1rem; color: #1a202c;"><strong>$267k median price</strong> ÷ <strong>$97k median income</strong></div>
+                        <div style="font-size: 3rem; font-weight: 700; color: #2d5a7b; margin-top: 0.5rem; line-height: 1;">2.75x</div>
+                        <p style="font-size: 0.95rem; color: #64748b; margin-top: 0.75rem;">Reasonable affordability</p>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.95rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem;">Regional In-Movers</div>
+                        <div style="font-size: 1.1rem; color: #1a202c;"><strong>$299.9k median price</strong> ÷ <strong>$97k median income</strong></div>
+                        <div style="font-size: 3rem; font-weight: 700; color: #e07856; margin-top: 0.5rem; line-height: 1;">3.09x</div>
+                        <p style="font-size: 0.95rem; color: #64748b; margin-top: 0.75rem;">Elevated stress</p>
+                    </div>
+                </div>
+            </div>
+
+            <p class="section-intro">Regional in-movers from Texas and New Mexico face the highest affordability pressure, despite earning comparable incomes to local buyers. This suggests they are either purchasing larger/newer homes than local cohorts, or underestimating local affordability after relocating from lower cost-of-living markets.</p>
+        </div>
+
+        <!-- Housing Product -->
+        <div class="section">
+            <h2>What Are They Buying?</h2>
+            <p class="section-intro">The typical first-time buyer home in El Paso is a 4-bedroom, 2-bathroom, ~1,927 sqft suburban property. This represents a significant shift from older urban stock (3-bed, 1-bath).</p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin: 2rem 0; align-items: center;">
+                <div>
+                    <h3>Why Suburban?</h3>
+                    <p>The preference for 4-bed/2-bath units reflects family formation patterns: many first-time buyers are young parents anticipating children. The shift from older 3-bed/1-bath urban units to suburban 4-bed/2-bath homes also reflects broader suburban migration patterns and the availability of new construction in high-demand zip codes (79928, 79938, 79934).</p>
+                </div>
+                <div class="callout">
+                    <div class="callout-title">Typical Product Specs</div>
+                    <ul style="margin-top: 1rem; font-size: 1.1rem; color: #475569; list-style: none;">
+                        <li style="margin: 1rem 0; display: flex; align-items: center;"><span style="color:#2d5a7b; margin-right: 10px;">■</span> <strong>4 bedrooms</strong></li>
+                        <li style="margin: 1rem 0; display: flex; align-items: center;"><span style="color:#2d5a7b; margin-right: 10px;">■</span> <strong>2 bathrooms</strong></li>
+                        <li style="margin: 1rem 0; display: flex; align-items: center;"><span style="color:#2d5a7b; margin-right: 10px;">■</span> <strong>~1,927 sqft</strong></li>
+                        <li style="margin: 1rem 0; display: flex; align-items: center;"><span style="color:#2d5a7b; margin-right: 10px;">■</span> <strong>New/newer construction</strong></li>
+                        <li style="margin: 1rem 0; display: flex; align-items: center;"><span style="color:#2d5a7b; margin-right: 10px;">■</span> <strong>Suburban location</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mortgage Products -->
+        <div class="section">
+            <h2>How Are They Financing?</h2>
+            <p class="section-intro">The distribution of mortgage product types reveals important insights about buyer financial profiles and available credit.</p>
+            
+            <div class="content-with-chart">
+                <div>
+                    <div style="display: grid; gap: 1.5rem;">
+                        <div class="card" style="padding: 1.5rem;">
+                            <div style="font-size: 1.8rem; font-weight: 700; color: #2d5a7b;">43.6% FHA Loans</div>
+                            <p style="font-size: 0.95rem; color: #64748b; margin-top: 0.5rem;">3.5% down payment, accessible to buyers with limited savings</p>
+                        </div>
+                        <div class="card" style="padding: 1.5rem;">
+                            <div style="font-size: 1.8rem; font-weight: 700; color: #e07856;">33.7% VA Loans</div>
+                            <p style="font-size: 0.95rem; color: #64748b; margin-top: 0.5rem;">0% down available; reflects significant military presence</p>
+                        </div>
+                        <div class="card" style="padding: 1.5rem;">
+                            <div style="font-size: 1.8rem; font-weight: 700; color: #64748b;">22.6% Conventional</div>
+                            <p style="font-size: 0.95rem; color: #64748b; margin-top: 0.5rem;">5–20% down; buyers with stronger savings or support</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="financeChart" class="chart-container"></div>
+            </div>
+
+            <div class="finding">
+                <strong>Key Insight:</strong> Government-backed lending (FHA + VA) accounts for 77.3% of all first-time purchases. This underscores that most first-time buyers lack substantial down payment savings and rely on federal programs to access homeownership.
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <div class="footer-col">
+            <h4>El Paso Homebuyer Analysis</h4>
+            <p>Data-driven insights into first-time homebuyer patterns, affordability, and market dynamics in El Paso County.</p>
+            <p style="margin-top: 1.5rem; font-size: 0.85rem; color: #64748b;">© 2026 | Data Period: 2025</p>
+        </div>
+        <div class="footer-col">
+            <h4>Pages</h4>
+            <p style="margin-bottom: 0.5rem;"><a href="#overview">Overview</a></p>
+            <p style="margin-bottom: 0.5rem;"><a href="analysis.html">Full Analysis</a></p>
+            <p style="margin-bottom: 0.5rem;"><a href="mortgage.html">Mortgage Strategy</a></p>
+            <p style="margin-bottom: 0.5rem;"><a href="map.html">Interactive Map</a></p>
+        </div>
+        <div class="footer-col">
+            <h4>Data Sources</h4>
+            <p style="margin-bottom: 0.5rem;">HMDA (Home Mortgage Disclosure Act)</p>
+            <p style="margin-bottom: 0.5rem;">MLS (Multiple Listing Service)</p>
+            <p style="margin-bottom: 0.5rem;">Data Axle (Mover Tracking)</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Shared modern layout settings for Plotly (Ensuring colors are strictly quoted strings!)
+    const commonLayout = {
+        font: { family: 'Inter, sans-serif' },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        margin: { t: 40, r: 20, b: 40, l: 40 },
+        xaxis: { gridcolor: '#e2e8f0', zerolinecolor: '#e2e8f0' },
+        yaxis: { gridcolor: '#e2e8f0', zerolinecolor: '#e2e8f0' }
+    };
+    const config = { responsive: true, displayModeBar: false };
+
+    // 1. Demographics Chart
+    Plotly.newPlot('demoChart', [{
+        x: ['25-34 yrs', '35-44 yrs', 'Other'],
+        y: [50, 42, 8],
+        type: 'bar',
+        marker: { color: ['#2d5a7b', '#e07856', '#cbd5e1'], borderRadius: 4 }
+    }], { ...commonLayout, title: { text: 'Buyer Age Distribution (%)', font: { size: 16 } } }, config);
+
+    // 2. Origin Chart
+    Plotly.newPlot('originChart', [{
+        values: [73.9, 19.6, 6.5],
+        labels: ['From Texas', 'Long-Distance', 'Regional'],
+        type: 'pie',
+        hole: 0.45,
+        marker: { colors: ['#2d5a7b', '#64748b', '#e07856'] },
+        textinfo: 'label+percent'
+    }], { ...commonLayout, showlegend: false, title: { text: 'Buyer Origin Distribution', font: { size: 16 } } }, config);
+
+    // 3. Financing Chart
+    Plotly.newPlot('financeChart', [{
+        x: ['FHA', 'VA', 'Conventional'],
+        y: [43.6, 33.7, 22.6],
+        type: 'bar',
+        marker: { color: ['#2d5a7b', '#e07856', '#64748b'], borderRadius: 4 }
+    }], { ...commonLayout, title: { text: 'Mortgage Products Utilized (%)', font: { size: 16 } } }, config);
+</script>
+
 </body>
 </html>
